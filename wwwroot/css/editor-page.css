@@ -1,0 +1,24 @@
+﻿.main__iframe {
+    height: 650px;
+    width: 100%;
+}
+
+.main__iframe iframe {
+    border: none;
+    height: 100%;
+    width: 100%;
+}
+
+.main__version {
+    text-align: end;
+    margin-top: 0.5rem;
+    color: #2bafe6;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+}
+
+.editor-parent {
+    width: 100%;
+    height: calc(100vh - 4.0625rem);
+    min-height: 30rem;
+}

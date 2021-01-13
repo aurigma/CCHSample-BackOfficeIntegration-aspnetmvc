@@ -1,0 +1,211 @@
+﻿@model DesignModel
+
+@section Styles {
+	<link href="@Url.Content("~/css/editor-page.css")" rel="stylesheet" type="text/css" />
+}
+
+@section Scripts {
+	<!-- INSERT CUSTOMER'S CANVAS URL HERE!-->
+	<!-- To the base URL of your CC instance add /Resources/Generated/IframeApi.js -->
+	<script type="text/javascript" id="CcIframeApiScript" src="https://cc-apps.aurigma.net/@ViewBag.TenantId/design-editor/@ViewBag.DesignEditorVersion/Resources/Generated/IframeApi.js"></script><!-- -->
+}
+@{
+	ViewData["Title"] = "Edit " + Model.Name;
+}
+<div class="container">
+	<nav class="navbar navbar-light bg-light">
+		<ul class="nav">
+			<li class="nav-item">
+				<button id="download" disabled class="btn btn-primary">Download Result</button>
+			</li>
+		</ul>
+	</nav>
+	<div class="row">
+		<div class="col">
+			<div class="main__iframe">
+				<iframe id="editorFrame"></iframe>
+			</div>
+			<div class="main__section main__section-version">
+				<div class="main__version" id="version-box">
+					ver.
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+
+	// A helper function to download the URL
+	// https://stackoverflow.com/a/49917066/4173445
+	function download(url) {
+		let link = document.createElement("a");
+		link.style = "position:absolute; top:-99999999; left:-9999999; visibility:hidden";
+		link.href = url;
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	};
+
+
+	document.addEventListener('DOMContentLoaded', async () => {
+
+		const config = {
+			userId: 123,
+			canvas: {
+				canvasItemHoverEnabled: true,
+				containerColor: "#eee",
+				shadowEnabled: true,
+				ruler: {
+					enabled: false
+				}
+			},
+			fontList: {
+				appFonts: ["*"]
+			},
+			assetSources: {
+				"My files": {
+					type: "PrivateSource",
+					allowedExtensions: [
+						"jpg",
+						"jpeg",
+						"png",
+						"pdf",
+						"bmp",
+						"tif",
+						"tiff",
+						"svg"
+					]
+				},
+				"Images": {
+					type: "PublicSource",
+					rootCategory: {
+						name: ""
+					},
+					actionMode: {
+						"psd": "Design",
+						"svg": "Clipart",
+						"pdf": "Vector",
+						"ai": "Vector"
+					}
+				},
+				"Background": {
+					type: "PublicSource",
+					rootFolder: {
+						"show": true
+					},
+					rootCategory: {
+						name: "Background"
+					},
+					actionMode: {
+						"psd": "Merged",
+						"svg": "Vector",
+						"pdf": "Vector",
+						"ai": "Vector"
+					}
+				}
+			},
+			widgets: {
+				AssetManager: {
+					tabs: [{
+						name: "My files",
+						assetSourceInstance: "My files",
+						iconClassName: "cc-icon-uploadable",
+						controls: {
+							toolbarEnabled: false
+						}
+					},
+					{
+						name: "Images",
+						assetSourceInstance: "Images",
+						iconClassName: "cc-icon-add-image",
+						controls: {
+							categoriesEnabled: true,
+							assetNameEnabled: true,
+							toolbarEnabled: true
+						}
+					},
+					{
+						name: "Background",
+						assetSourceInstance: "Background",
+						iconClassName: "cc-icon-background",
+						controls: {
+							categoriesEnabled: true,
+							assetNameEnabled: true,
+							toolbarEnabled: true
+						}
+					}]
+				},
+				Toolbox: {
+					buttons: [
+						"Text",
+						{
+							translationKey: "Toolbox.SHAPE",
+							translationKeyTitle: "Toolbox.TITLE_ADD_SHAPE",
+							iconClass: "cc-icon-add-shape",
+							buttons: [
+								"Line",
+								"Rectangle",
+								"Ellipse"
+							]
+						},
+						"QrCode",
+						{
+							"action": "Image",
+							"iconClass": "cc-icon-uploadable",
+							"tabs": [
+								"My files"
+							]
+						},
+						{
+							"action": "Image",
+							"iconClass": "cc-icon-add-image",
+							"tabs": [
+								"Images"
+							]
+						},
+						{
+							"action": "Background",
+							"iconClass": "cc-icon-background",
+							"tabs": [
+								"Background"
+							]
+						}
+					]
+				}
+			},
+			violationWarningsSettings: {
+				qualityMeter: {
+					enabled: false
+				},
+				regionViolationWarningEnabled: true,
+				safetyLineViolationWarningEnabled: false,
+				textCropViolationWarningEnabled: true,
+				shapeViolationsEnabled: true
+			},
+			rendering: {
+				hiResOutputDpi: 72,
+				hiResOutputFileFormat: "png",
+				hiResOutputColorSpace: "rgb",
+				proofImageSafetyLinesEnabled: false
+			}
+		};
+
+		document.getElementById("version-box").innerText = "version " + CustomersCanvas.VERSION;
+
+		var editor = await CustomersCanvas.IframeApi.loadEditor(
+					document.getElementById("editorFrame"), "@Model.Id", config);
+
+		document.getElementById("download").removeAttribute("disabled");
+		document.getElementById("download").addEventListener("click", async () => {
+			const result = await editor.finishProductDesign({
+				fileName: '@Model.Name',
+				generateLargePreviews: true,
+				pregeneratePreviewImages: true
+			});
+			result
+				.hiResOutputUrls
+				.forEach(download);
+		});
+
+	});
+</script>

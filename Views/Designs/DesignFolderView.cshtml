@@ -1,0 +1,26 @@
+﻿@model DesignBrowserMVC.Models.DesignsFolderModel
+
+@{
+	ViewData["Title"] = "Designs at " + Model.Path;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="container">
+	<div class="card-columns">
+		@foreach (var item in Model.Content.Entities)
+		{
+			var previewUrl = Url.Action("Index", "DesignPreview", new { id = item.Id });
+			<div class="card" style="width: 18rem;">
+				<img class="card-img-top" src="@previewUrl" alt="@item.Name">
+				<div class="card-body">
+					<h5 class="card-title">@item.Name</h5>
+					<p class="card-text">Last modified: @item.LastModified.ToString("dd MMM yyyy")</p>
+				</div>
+				<div class="card-body">
+					<a href="#" class="card-link">@Html.ActionLink("Edit", "Edit", new { id = item.Id, name = item.Name })</a>
+				</div>
+			</div>
+		}
+	</div>
+</div>
