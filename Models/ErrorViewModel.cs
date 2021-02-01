@@ -1,6 +1,6 @@
 using System;
 
-namespace DesignBrowserMVC.Models
+namespace CustomersCanvasSample.Models
 {
     public class ErrorViewModel
     {

@@ -5,12 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using DesignBrowserMVC.Models;
+using CustomersCanvasSample.Models;
 using Aurigma.AssetStorage;
 using Microsoft.Extensions.Options;
 using Aurigma.AssetProcessor;
 
-namespace DesignBrowserMVC.Controllers
+namespace CustomersCanvasSample.Controllers
 {
     public class DesignsController : Controller
     {
@@ -37,13 +37,13 @@ namespace DesignBrowserMVC.Controllers
         {
             var path = _path;
             var folder = await _designsApiClient.GetFolderAsync(path);
-            return View("DesignFolderView", new Models.DesignsFolderModel(path, folder));
+            return View(new Models.DesignsFolderModel(path, folder));
         }
         public IActionResult Edit(string id, string name)
         {
             ViewBag.TenantId = _ccoptions.TenantId;
             ViewBag.DesignEditorVersion = _ccoptions.DesignEditorVersion;
-            return View("DesignEdit", new DesignModel(id, name));
+            return View(new DesignModel(id, name));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

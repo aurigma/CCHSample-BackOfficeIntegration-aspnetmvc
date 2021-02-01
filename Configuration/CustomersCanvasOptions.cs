@@ -9,4 +9,5 @@ public class CustomersCanvasOptions
     public int TenantId { get; set; }
 
     public string DesignEditorVersion { get; set; }
+    public int StorefrontId { get; set; }
 }

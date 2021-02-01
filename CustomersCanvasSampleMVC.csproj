@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -8,9 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aurigma.AssetProcessor.ApiClient" Version="1.4.34.7968" />
-    <PackageReference Include="Aurigma.AssetStorage.ApiClient" Version="1.4.21.8010" />
+    <PackageReference Include="Aurigma.AssetProcessor.ApiClient" Version="2.1.8.8167" />
+    <PackageReference Include="Aurigma.AssetStorage.ApiClient" Version="2.1.6.8166" />
+    <PackageReference Include="Aurigma.BackOffice.ApiClient" Version="2.2.183.8180" />
     <PackageReference Include="IdentityModel" Version="4.4.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

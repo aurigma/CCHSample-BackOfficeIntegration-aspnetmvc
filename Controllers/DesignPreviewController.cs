@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Aurigma.AssetProcessor;
 using System.IO;
 
-namespace DesignBrowserMVC.Controllers
+namespace CustomersCanvasSample.Controllers
 {
     public class DesignPreviewController : Controller
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DesignBrowserMVC.Services
+namespace CustomersCanvasSample.Services
 {
     public class DesignPreviewService
     {

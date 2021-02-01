@@ -1,0 +1,83 @@
+﻿@model AdminProductModel
+
+@*
+	This is an example of a product management page. It consists of two parts - general product details (which is a part of your business logic)
+	and the connection of a product to a template you create in BackOffice. See the controller and EcommerceDataService source code for more 
+	information how to work with Customer's Canvas API.
+*@
+@{
+	ViewData["Title"] = $"Manage {Model.Product.Name}";
+}
+<div class="container">
+	<h1>
+		@ViewData["Title"] <small class="text-muted"><a href="@Url.Action("Index", "AdminProducts")">Back</a></small>
+	</h1>
+
+	<div class="accordion" id="product-management">
+		<div class="card">
+			<div class="card-header" id="heading-product-details">
+				<h5 class="mb-0">
+					<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-product-details" aria-expanded="false" aria-controls="collapse-product-details">
+						Product Details
+					</button>
+				</h5>
+			</div>
+
+			<div id="collapse-product-details" class="collapse show" aria-labelledby="heading-product-details" data-parent="#product-management">
+				<div class="card-body">
+					<form method="post" action="@Url.Action("UpdateProductDetails", "AdminProducts")">
+						<input type="hidden" value="@Model.Product.Id" name="id" />
+						<div class="form-group">
+							<label for="idfield">ID</label>
+							<input type="number" value="@Model.Product.Id" disabled="disabled" class="form-control" id="idfield" aria-describedby="idfieldhelp" placeholder="Enter SKU">
+							<small id="idfieldhelp" class="form-text text-muted">Your product ID.</small>
+						</div>
+
+						<div class="form-group">
+							<label for="namefield">Name</label>
+							<input name="name" type="text" value="@Model.Product.Name" class="form-control" id="namefield" aria-describedby="namefieldhelp" placeholder="Enter product name">
+							<small id="namefieldhelp" class="form-text text-muted">A human-readable product name.</small>
+						</div>
+						<div class="form-group">
+							<label for="pricefield">Price</label>
+							<input name="price" type="number" value="@Model.Product.Price" class="form-control" id="pricefield" aria-describedby="pricefieldhelp" placeholder="Enter price">
+							<small id="namefieldhelp" class="form-text text-muted">A price.</small>
+						</div>
+						<button type="submit" class="btn btn-primary">Save</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-header" id="heading-customerscanvas-connection">
+				<h5 class="mb-0">
+					<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-customerscanvas-connection" aria-expanded="true" aria-controls="collapse-customerscanvas-connection">
+						Connect to Customer's Canvas
+					</button>
+				</h5>
+			</div>
+
+			<div id="collapse-customerscanvas-connection" class="collapse show" aria-labelledby="heading-customerscanvas-connection" data-parent="#product-management">
+				<div class="card-body">
+					<form method="post" action="@Url.Action("ConnectTemplate", "AdminProducts")">
+						<input type="hidden" value="@Model.Product.Id" name="productId" />
+						<div class="form-group">
+							<label for="template-list">Choose a template</label>
+							<div class="form-group">
+								<select name="templateId" class="form-control" id="template-list">
+									@foreach(var template in Model.Templates.Items) {
+									<option selected="@(Model.Product.TemplateId == template.Id ? "selected": null)" value="@template.Id">@template.Name</option>
+								}
+								</select>
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-primary">Connect</button>
+								<button type="submit" class="btn btn-outline-danger" disabled="@(Model.Product.TemplateId == null)" formaction="@Url.Action("DisconnectTemplate", "AdminProducts")">Disconnect</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

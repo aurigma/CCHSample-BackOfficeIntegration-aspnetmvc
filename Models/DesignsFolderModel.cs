@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Aurigma.AssetStorage;
 
-namespace DesignBrowserMVC.Models
+namespace CustomersCanvasSample.Models
 {
     public class DesignsFolderModel
     {

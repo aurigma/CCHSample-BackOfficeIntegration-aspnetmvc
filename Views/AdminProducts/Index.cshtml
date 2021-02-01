@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Product>
+@*
+	This page is supposed to be a part of your admin panel. Here you have a list of the 
+	products published in your ecommerce system.
+*@
+
+@{
+	ViewData["Title"] = "Manage Products";
+}
+
+<div class="container">
+	<h1>@ViewData["Title"]</h1>
+	<div class="list-group">
+		@foreach (var product in Model)
+		{
+			<a href="@Url.Action("Edit", "AdminProducts", new { id = product.Id })" class="list-group-item list-group-item-action flex-column align-items-start">
+				<div class="media">
+					<img class="mr-3" style="height: 64px" src="@product.ImageUrl" alt="@product.Name">
+					<div class="media-body">
+						<h5 class="mt-0">@product.Name</h5>
+						@product.Price
+						@if(product.TemplateId != null) {
+							<i class="fas fa-plug"></i>
+						}
+					</div>
+				</div>
+			</a>
+		}
+	</div>
+</div>

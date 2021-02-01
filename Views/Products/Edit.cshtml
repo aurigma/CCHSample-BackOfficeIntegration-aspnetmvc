@@ -1,0 +1,83 @@
+﻿@model Product
+@using System.Globalization;
+@*
+	Here we display the product page of your online store. As usual, you want to add a "Personalize" button here which should 
+	open the design in the editor.
+*@
+@{
+	ViewData["Title"] = Model.Name;
+}
+
+<div class="container" id="store-content">
+	<div class="row">
+		<!-- Left Column -->
+		<div class="col">
+			<div id="demoCarousel" class="carousel slide" data-ride="carousel">
+				<div class="carousel-inner">
+					<div class="carousel-item active">
+						<img src="@Model.ImageUrl" alt="First slide">
+					</div>
+					<div class="carousel-item">
+						<img src="@Model.ImageUrl" alt="Second slide">
+					</div>
+					<div class="carousel-item">
+						<img src="@Model.ImageUrl" alt="Third slide">
+					</div>
+				</div>
+				<ol class="carousel-indicators">
+					<li data-target="#demoCarousel" data-slide-to="0" class="active"></li>
+					<li data-target="#demoCarousel" data-slide-to="1"></li>
+					<li data-target="#demoCarousel" data-slide-to="2"></li>
+				</ol>
+			</div>
+		</div>
+
+		<!-- Right Column -->
+		<div class="col">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Home</a></li>
+					<li class="breadcrumb-item"><a href="@Url.Action("Index","Products")">Products</a></li>
+					<li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+				</ol>
+			</nav>
+			<h5>SKU <span class="sku-holder">@Model.Id</span></h5>
+			<h2>@Model.Name</h2>
+			<h4>@Model.Price.ToString("C", new CultureInfo("en-US"))</h4>
+			<form>
+				<div class="form-group">
+					<label for="quantity-group">Quantity</label>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<div class="input-group-text"><div class="minus"></div></div>
+						</div>
+						<input type="text" class="form-control" id="quantity-group" value="1" disabled>
+						<div class="input-group-append">
+							<div class="input-group-text"><div class="plus"></div></div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="option-1">Option 1</label>
+					<select class="form-control" id="option-1" area-placeholder="Choose an option" disabled>
+						<option>Choose an option</option>
+						<option>Value 1</option>
+						<option>Value 2</option>
+					</select>
+				</div>
+				<a id="customize-button" href="@Url.Action("Personalize", "Products", new { id = Model.Id })" class="btn btn-primary btn-lg">Personalize</a>
+			</form>
+			<div class="card m-1">
+				<div class="card-body">
+					<h5 class="card-title">Description</h5>
+					<p class="card-text">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+						Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure 
+						dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat 
+						non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

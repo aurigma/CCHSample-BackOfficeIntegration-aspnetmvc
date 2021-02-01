@@ -1,0 +1,50 @@
+﻿@model Product
+@*
+	For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@section Scripts {
+	<script src="~/js/storefront.main.js"></script>
+
+	<script type="module">
+		document.addEventListener("DOMContentLoaded", async function (event) {
+			const backoffice = new Aurigma.BackOffice({
+				tenantId: @ViewBag.TenantId,
+				backOfficeUrl: "@ViewBag.BackOfficeUrl",
+				pluginSettings: { currency: 'USD' }
+			});
+
+			const userInfo = { id: "1234" }; // pass a real user id of your customers here
+
+			const container = document.getElementById('editor-container');
+
+			const data = await backoffice.templates.findByProduct(@Model.Id);
+			await backoffice.loadEditor(container, data, userInfo);
+
+			backoffice.onFinish.subscribe(async (backoffice, project) => {
+				// It is supposed that this code is called from a Shopping Cart, but for 
+				// simplicity, we do it immediately. As a part of the Project Data you need
+				// to send an Order ID which is normally known by the time when you checkout
+				// (and complete the order). For this example, we will just hardcode it.
+				const orderId = "12345678";
+
+				await fetch("@Url.Action("Create", "Projects")", {
+					method: "post",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						lineItems: project.line_items,
+						productId: "@Model.Id",
+						userId: userInfo.id,
+						orderId: orderId
+					})
+				});
+				alert("Now the user's modifications are saved in your Customer's Canvas account.");
+				window.location = "@Url.Action("Index", "Products")";
+			});
+		});
+	</script>
+}
+<div id="editor-container" style="height:80vh;"></div>

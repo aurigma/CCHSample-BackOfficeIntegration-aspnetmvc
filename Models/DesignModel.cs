@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DesignBrowserMVC.Models
+namespace CustomersCanvasSample.Models
 {
     public class DesignModel
     {

@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DesignBrowserMVC.Configuration
+namespace CustomersCanvasSample.Configuration
 {
-    public class MyAssetStorageApiClientConfiguration: 
+    public class CustomersCanvasApiClientConfiguration: 
         Aurigma.AssetStorage.IApiClientConfiguration,
-        Aurigma.AssetProcessor.IApiClientConfiguration
+        Aurigma.AssetProcessor.IApiClientConfiguration,
+        Aurigma.BackOffice.IApiClientConfiguration
     {
         private CustomersCanvasOptions _ccoptions;
         private TokenService _tokenService;
-        public MyAssetStorageApiClientConfiguration(IOptions<CustomersCanvasOptions> customersCanvasOptions, TokenService tokenService)
+        public CustomersCanvasApiClientConfiguration(IOptions<CustomersCanvasOptions> customersCanvasOptions, TokenService tokenService)
         {
             _tokenService = tokenService;
             _ccoptions = customersCanvasOptions.Value;
