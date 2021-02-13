@@ -35,18 +35,6 @@
 </div>
 <script>
 
-	// A helper function to download the URL
-	// https://stackoverflow.com/a/49917066/4173445
-	function download(url) {
-		let link = document.createElement("a");
-		link.style = "position:absolute; top:-99999999; left:-9999999; visibility:hidden";
-		link.href = url;
-		document.body.appendChild(link);
-		link.click();
-		document.body.removeChild(link);
-	};
-
-
 	document.addEventListener('DOMContentLoaded', async () => {
 
 		const config = {
@@ -204,7 +192,7 @@
 			});
 			result
 				.hiResOutputUrls
-				.forEach(download);
+				.forEach(download); /* You may find download function in wwwroot/js/site.js */
 		});
 
 	});

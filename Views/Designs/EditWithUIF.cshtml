@@ -1,0 +1,120 @@
+﻿@model DesignModel
+
+@{
+	ViewData["Title"] = "Edit " + Model.Name;
+
+	var uiFrameworkVersion = "4.18.0";
+	var uiFrameworkBaseUrl = "https://staticjs-aurigma.azureedge.net/ui-framework/" + uiFrameworkVersion;
+}
+
+@section Styles {
+	<link href="@Url.Content("~/css/editor-page.css")" rel="stylesheet" type="text/css" />
+}
+
+@section Scripts {
+	<!-- INSERT CUSTOMER'S CANVAS URL HERE!-->
+	<!-- To the base URL of your CC instance add /Resources/Generated/IframeApi.js -->
+	<script type="text/javascript" id="CcIframeApiScript" src="https://cc-apps.aurigma.net/@ViewBag.TenantId/design-editor/@ViewBag.DesignEditorVersion/Resources/Generated/IframeApi.js"></script><!-- -->
+}
+
+<div class="container">
+	<div class="row">
+		<div class="col">
+			<div class="editor-parent" id="editor-parent"></div>
+		</div>
+	</div>
+</div>
+<script type="module">
+	import moduleLoader from "@uiFrameworkBaseUrl/moduleLoader.js";
+
+	document.addEventListener('DOMContentLoaded', async () => {
+
+		// --- Initialize data from your application ---
+
+		/*
+		 * It is supposed that it reflects the product model from your application.
+		 *
+		 * The important part here is the attributes. It is supposed that you add a reference
+		 * to a design to the product model in your admin panel. In this demo, for brevity,
+		 * we pass an Id of a design clicked by a user.
+		 * 
+		 * The required attributes are listed in the config (e.g. see the App_Data/ui-framework/standard-editor.json)
+		 */
+		const productModel = {
+			id: 0,
+			sku: "TEST-0001234",
+			title: "@Model.Name",
+			description: "This is a test product",
+			options: [],
+			price: 19.99,
+			attributes: [
+				{
+					id: 10001,
+					title: "Design",
+					value: {
+						id: "@Model.Id"
+					}
+				},
+				{
+					id: 10002,
+					title: "Clipart",
+					value: {
+						fullPath: "/"
+					}
+				},
+				{
+					id: 10003,
+					title: "Output Resolution",
+					value: 300
+				},
+				{
+					id: 10004,
+					title: "AdvancedModeOn",
+					value: true
+				}
+			]
+		}
+
+		const quantity = 1;
+
+		const userModel = {
+			id: "1234567"
+		}
+
+		const config = @Html.Raw(Model.Config);
+
+		const settings = { customersCanvasBaseUrl: "https://cc-apps.aurigma.net/@ViewBag.TenantId/design-editor/@ViewBag.DesignEditorVersion/" };
+
+		// --- Load UI Framework scripts and pass data into it ---
+
+		const driverModule = await moduleLoader.dynamicImport("ecommerceDriver", "@uiFrameworkBaseUrl/drivers/default-driver.js")
+		const driver = driverModule.ecommerceDriver;
+
+		const editorModule = await moduleLoader.dynamicImportDefault("editor", "@uiFrameworkBaseUrl/editor.js");
+		const editor = editorModule.editor?.editor ?? editorModule.editor;  // depending on a UI Framework version, it may be inside a nested object.
+
+		// Initialization - you should provide us with a product definition, editor instance,
+		// config, data returned by the editor, items quantity (when it is necessary).
+		const ecommerce = await driver.init(productModel, editor, config, settings, null, quantity, userModel);
+
+		// Display the editor in the specified div element
+		ecommerce.products.current.renderEditor(document.getElementById("editor-parent"));
+
+		// Subscribe an event which will be called when the user finishes editing (you are supposed to put a code which
+		// sends the product to a shopping cart).
+
+		ecommerce.cart.onPriceChanged.subscribe(data => {
+			console.log("onPriceChanged: price: " + data.price + ", priceLocalized: " + data.priceLocalized);
+		});
+
+		ecommerce.cart.onSubmitting.subscribe(data => console.log("submitting", data));
+		ecommerce.cart.onSubmitted.subscribe(data => {
+			// It contains the stateId, userId, preview images and the other output data.
+			console.log("submitted");
+			data.lineItems.forEach((order, index) => {
+				console.log(`Line item ${index + 1}: Private Design ID = ${order.props._stateId.join(", ")} for the user ${order.props._userId}`);
+			});
+		});
+
+	});
+</script>

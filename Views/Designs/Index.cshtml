@@ -11,16 +11,24 @@
 		@foreach (var item in Model.Content.Entities)
 		{
 			var previewUrl = Url.Action("Index", "DesignPreview", new { id = item.Id });
-			<div class="card" style="width: 18rem;">
-				<img class="card-img-top" src="@previewUrl" alt="@item.Name">
-				<div class="card-body">
-					<h5 class="card-title">@item.Name</h5>
-					<p class="card-text">Last modified: @item.LastModified.ToString("dd MMM yyyy")</p>
-				</div>
-				<div class="card-body">
-					<a href="#" class="card-link">@Html.ActionLink("Edit", "Edit", new { id = item.Id, name = item.Name })</a>
-				</div>
+		<div class="card" style="width: 18rem;">
+			<img class="card-img-top" src="@previewUrl" alt="@item.Name">
+			<div class="card-body">
+				<h5 class="card-title">@item.Name</h5>
+				<p class="card-text">Last modified: @item.LastModified.ToString("dd MMM yyyy")</p>
 			</div>
+			<ul class="list-group list-group-flush">
+				<li class="list-group-item">
+					<a href="#" class="card-link">@Html.ActionLink("Open with IFrame API", "Edit", new { id = item.Id, name = item.Name })</a>
+				</li>
+				<li class="list-group-item">
+					<a href="#" class="card-link">@Html.ActionLink("Open with UI Framework", "EditWithUIF", new { id = item.Id, name = item.Name, configName = "standard-editor.json" })</a>
+				</li>
+			</ul>
+			<div class="card-body">
+				
+			</div>
+		</div>
 		}
 	</div>
 </div>

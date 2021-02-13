@@ -9,6 +9,8 @@ using CustomersCanvasSample.Models;
 using Aurigma.AssetStorage;
 using Microsoft.Extensions.Options;
 using Aurigma.AssetProcessor;
+using CustomersCanvasSampleMVC.Services;
+using System.IO;
 
 namespace CustomersCanvasSample.Controllers
 {
@@ -39,11 +41,30 @@ namespace CustomersCanvasSample.Controllers
             var folder = await _designsApiClient.GetFolderAsync(path);
             return View(new Models.DesignsFolderModel(path, folder));
         }
+
         public IActionResult Edit(string id, string name)
         {
             ViewBag.TenantId = _ccoptions.TenantId;
             ViewBag.DesignEditorVersion = _ccoptions.DesignEditorVersion;
             return View(new DesignModel(id, name));
+        }
+
+        public IActionResult EditWithUIF(string id, string name, string configName)
+        {
+            ViewBag.TenantId = _ccoptions.TenantId;
+            ViewBag.DesignEditorVersion = _ccoptions.DesignEditorVersion;
+
+            using var uiFrameworkConfigService = UIFrameworkService.FromAppData(
+                Path.Combine(
+                    AppDomain.CurrentDomain.GetData("DataDirectory").ToString(),
+                    "ui-framework",
+                    configName
+                ));
+
+            return View(new DesignModel(
+                id,
+                name,
+                uiFrameworkConfigService.GetConfigAsJsonString(true)));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

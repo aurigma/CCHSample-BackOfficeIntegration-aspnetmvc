@@ -68,6 +68,10 @@ namespace CustomersCanvasSample
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            // Set up App_Data folder
+            string baseDir = env.ContentRootPath;
+            AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(baseDir, "App_Data"));
+
             app.UseRouting();
 
             app.UseAuthorization();
