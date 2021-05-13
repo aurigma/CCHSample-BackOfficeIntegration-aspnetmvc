@@ -6,17 +6,20 @@ using System.Threading.Tasks;
 
 namespace CustomersCanvasSample.Configuration
 {
-    public class CustomersCanvasApiClientConfiguration: 
+    public class CustomersCanvasApiClientConfiguration:
         Aurigma.AssetStorage.IApiClientConfiguration,
         Aurigma.AssetProcessor.IApiClientConfiguration,
-        Aurigma.BackOffice.IApiClientConfiguration
+        Aurigma.StorefrontApi.IApiClientConfiguration
     {
-        private CustomersCanvasOptions _ccoptions;
+        private CustomersCanvasOptions _options;
         private TokenService _tokenService;
-        public CustomersCanvasApiClientConfiguration(IOptions<CustomersCanvasOptions> customersCanvasOptions, TokenService tokenService)
+
+        public CustomersCanvasApiClientConfiguration(
+            TokenService tokenService,
+            IOptions<CustomersCanvasOptions> customersCanvasOptions)
         {
             _tokenService = tokenService;
-            _ccoptions = customersCanvasOptions.Value;
+            _options = customersCanvasOptions.Value;
         }
 
         public string GetApiKey()
@@ -26,7 +29,7 @@ namespace CustomersCanvasSample.Configuration
 
         public string GetApiUrl()
         {
-            return _ccoptions.ApiUrl;
+            return _options.ApiUrl;
         }
 
         public Task<string> GetAuthorizationTokenAsync()

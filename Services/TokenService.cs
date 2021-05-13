@@ -23,12 +23,12 @@ namespace CustomersCanvasSample
         private readonly HttpClient _client;
         private TokenInfo _tokenInfo;
 
-        private CustomersCanvasOptions _ccoptions;
+        private CustomersCanvasOptions _options;
 
-        public TokenService(IHttpClientFactory clientFactory, IOptions<CustomersCanvasOptions>customersCanvasOptions)
+        public TokenService(IHttpClientFactory clientFactory, IOptions<CustomersCanvasOptions> customersCanvasOptions)
         {
             _client = clientFactory.CreateClient();
-            _ccoptions = customersCanvasOptions.Value;
+            _options = customersCanvasOptions.Value;
         }
 
         public async Task<string> GetTokenAsync()
@@ -48,13 +48,13 @@ namespace CustomersCanvasSample
                     new ClientCredentialsTokenRequest
                     {
                         // A token endpoint in the IdentityProvider (BackOffice token URL)
-                        Address = $"{_ccoptions.IdentityProviderUrl}/connect/token",
+                        Address = $"{_options.IdentityProviderUrl}/connect/token",
 
                         // Client Id and Secret pair - you can register them in your 
                         // BackOffice tenant control panel. 
                         // NOTE: Be sure to provide all necessary scopes for this client!
-                        ClientId = _ccoptions.ClientId,
-                        ClientSecret = _ccoptions.ClientSecret
+                        ClientId = _options.ClientId,
+                        ClientSecret = _options.ClientSecret
                     });
 
             if (tokenResponse.IsError)

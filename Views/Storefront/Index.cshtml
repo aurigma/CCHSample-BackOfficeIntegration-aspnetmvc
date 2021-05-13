@@ -5,13 +5,13 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-	ViewData["Title"] = "Products";
+	ViewData["Title"] = "Storefront";
 }
 <div class="container">
 	<h1>@ViewData["Title"]</h1>
-	<p class="lead">
-		This page represents your storefront. It displays products from your ecommerce system (some stub objects in this sample app). If a product is "connected" to a product template object in Customer's Canvas, you will be able to edit it.
-	</p>
+    <p class="lead">
+        This page represents your storefront. It displays products from your ecommerce system (some stub objects in this sample app). If a product is "connected" to a Customer's Canvas product specification, you will be able to edit it.
+    </p>
 	<div class="row">
 		@foreach (var product in Model)
 		{
@@ -22,7 +22,7 @@
 						<div class="card-title">
 							<h5 class="card-title">@product.Name</h5>
 							<p class="card-text">@product.Price.ToString("C", new CultureInfo("en-US", false))</p>
-							<a href="@Url.Action("Edit", "Products", new { id = product.Id } )" class="btn btn-primary">Open product</a>
+							<a href="@Url.Action("Edit", "Storefront", new { id = product.Id } )" class="btn btn-primary">Open product</a>
 						</div>
 					</div>
 				</div>

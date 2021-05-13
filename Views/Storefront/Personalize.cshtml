@@ -35,14 +35,14 @@
 						"Content-Type": "application/json"
 					},
 					body: JSON.stringify({
-						lineItems: project.line_items,
+						items: project.line_items,
 						productId: "@Model.Id",
 						userId: userInfo.id,
 						orderId: orderId
 					})
 				});
 				alert("Now the user's modifications are saved in your Customer's Canvas account.");
-				window.location = "@Url.Action("Index", "Products")";
+				window.location = "@Url.Action("Index", "Storefront")";
 			});
 		});
 	</script>

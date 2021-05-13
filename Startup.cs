@@ -1,21 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Aurigma.AssetStorage;
 using Aurigma.AssetProcessor;
-using Aurigma.BackOffice;
+using Aurigma.StorefrontApi;
+using CustomersCanvasSample.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using CustomersCanvasSample.Db;
+using System;
+using System.Collections.Generic;
 using System.IO;
-using Microsoft.EntityFrameworkCore;
-using CustomersCanvasSample.Services;
+using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace CustomersCanvasSample
 {
@@ -37,13 +37,13 @@ namespace CustomersCanvasSample
 
             services.AddScoped<Aurigma.AssetStorage.IApiClientConfiguration, Configuration.CustomersCanvasApiClientConfiguration>();
             services.AddScoped<Aurigma.AssetProcessor.IApiClientConfiguration, Configuration.CustomersCanvasApiClientConfiguration>();
-            services.AddScoped<Aurigma.BackOffice.IApiClientConfiguration, Configuration.CustomersCanvasApiClientConfiguration>();
+            services.AddScoped<Aurigma.StorefrontApi.IApiClientConfiguration, Configuration.CustomersCanvasApiClientConfiguration>();
 
             services.AddHttpClient<IDesignsApiClient, DesignsApiClient>();
             services.AddHttpClient<IDesignProcessorApiClient, DesignProcessorApiClient>();
-            services.AddHttpClient<ITemplatesApiClient, TemplatesApiClient>();
+            services.AddHttpClient<IProductSpecificationsApiClient, ProductSpecificationsApiClient>();
+            services.AddHttpClient<IProductReferencesApiClient, ProductReferencesApiClient>();
             services.AddHttpClient<IProjectsApiClient, ProjectsApiClient>();
-            services.AddHttpClient<IEcommerceProductReferencesApiClient, EcommerceProductReferencesApiClient>();
 
             services.AddDbContext<EcommerceContext>
                 (o => o.UseSqlite(Configuration.GetConnectionString("EcommerceData")));

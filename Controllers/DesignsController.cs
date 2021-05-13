@@ -1,58 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Aurigma.AssetProcessor;
+using Aurigma.AssetStorage;
+using CustomersCanvasSample.Models;
+using CustomersCanvasSample.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using CustomersCanvasSample.Models;
-using Aurigma.AssetStorage;
 using Microsoft.Extensions.Options;
-using Aurigma.AssetProcessor;
-using CustomersCanvasSampleMVC.Services;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CustomersCanvasSample.Controllers
 {
     public class DesignsController : Controller
     {
-        private readonly ILogger<DesignsController> _logger;
         private readonly IDesignsApiClient _designsApiClient;
         private readonly IDesignProcessorApiClient _designProcessorApiClient;
+        private readonly CustomersCanvasOptions _options;
 
         private const string _path = "/";
-        private readonly CustomersCanvasOptions _ccoptions;
 
         public DesignsController(
-            ILogger<DesignsController> logger, 
-            IDesignsApiClient designsApiClient, 
+            IDesignsApiClient designsApiClient,
             IDesignProcessorApiClient designProcessorApiClient,
             IOptions<CustomersCanvasOptions> customersCanvasOptions)
         {
-            _logger = logger;
             _designsApiClient = designsApiClient;
             _designProcessorApiClient = designProcessorApiClient;
-            _ccoptions = customersCanvasOptions.Value;
+            _options = customersCanvasOptions.Value;
         }
 
         public async Task<IActionResult> Index()
         {
             var path = _path;
             var folder = await _designsApiClient.GetFolderAsync(path);
-            return View(new Models.DesignsFolderModel(path, folder));
+
+            return View(new DesignsFolderModel(path, folder));
         }
 
         public IActionResult Edit(string id, string name)
         {
-            ViewBag.TenantId = _ccoptions.TenantId;
-            ViewBag.DesignEditorVersion = _ccoptions.DesignEditorVersion;
+            ViewBag.TenantId = _options.TenantId;
+            ViewBag.DesignEditorVersion = _options.DesignEditorVersion;
+
             return View(new DesignModel(id, name));
         }
 
         public IActionResult EditWithUIF(string id, string name, string configName)
         {
-            ViewBag.TenantId = _ccoptions.TenantId;
-            ViewBag.DesignEditorVersion = _ccoptions.DesignEditorVersion;
+            ViewBag.TenantId = _options.TenantId;
+            ViewBag.DesignEditorVersion = _options.DesignEditorVersion;
 
             using var uiFrameworkConfigService = UIFrameworkService.FromAppData(
                 Path.Combine(

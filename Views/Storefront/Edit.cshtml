@@ -37,7 +37,7 @@
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Home</a></li>
-					<li class="breadcrumb-item"><a href="@Url.Action("Index","Products")">Products</a></li>
+					<li class="breadcrumb-item"><a href="@Url.Action("Index","Storefront")">Products</a></li>
 					<li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
 				</ol>
 			</nav>
@@ -65,7 +65,7 @@
 						<option>Value 2</option>
 					</select>
 				</div>
-				<a id="customize-button" href="@Url.Action("Personalize", "Products", new { id = Model.Id })" class="btn btn-primary btn-lg">Personalize</a>
+				<a id="customize-button" href="@Url.Action("Personalize", "Storefront", new { id = Model.Id })" class="btn btn-primary btn-lg">Personalize</a>
 			</form>
 			<div class="card m-1">
 				<div class="card-body">

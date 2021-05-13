@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json;
-using System.IO;
 
-namespace CustomersCanvasSampleMVC.Services
+namespace CustomersCanvasSample.Services
 {
     public class UIFrameworkService: IDisposable
     {
-        private JsonDocument config;
+        private JsonDocument _config;
+
         public UIFrameworkService(JsonDocument config)
         {
-            this.config = config;
+            _config = config;
         }
 
         public string GetConfigAsJsonString(bool prettyPrint)
@@ -23,13 +24,13 @@ namespace CustomersCanvasSampleMVC.Services
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping  // Otherwise it will ruin quotes in the config 
             }))
             {
-                config.WriteTo(writer);
+                _config.WriteTo(writer);
             }
 
             return System.Text.Encoding.UTF8.GetString(stream.ToArray());
         }
 
-        public JsonDocument Config { get { return config; } }
+        public JsonDocument Config { get { return _config; } }
 
         static public UIFrameworkService FromAppData(string configFileName)
         {
@@ -41,8 +42,8 @@ namespace CustomersCanvasSampleMVC.Services
 
         public void Dispose()
         {
-            config.Dispose();
-            config = null;
+            _config.Dispose();
+            _config = null;
         }
     }
 }

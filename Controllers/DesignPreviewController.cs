@@ -1,16 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Aurigma.AssetProcessor;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Aurigma.AssetProcessor;
-using System.IO;
 
 namespace CustomersCanvasSample.Controllers
 {
     public class DesignPreviewController : Controller
     {
         private readonly IDesignProcessorApiClient _designProcessorApiClient;
+
         public DesignPreviewController(IDesignProcessorApiClient designProcessorApiClient)
         {
             _designProcessorApiClient = designProcessorApiClient;
@@ -29,8 +30,8 @@ namespace CustomersCanvasSample.Controllers
                 previewName,
                 previewWidth,
                 previewHeight,
-                true,
-                DesignPreviewFormat.Jpeg, false);
+                stub: true,
+                format: DesignPreviewFormat.Jpeg);
 
             return previewBody.Stream;
         }

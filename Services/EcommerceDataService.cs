@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Aurigma.BackOffice;
+﻿using Aurigma.StorefrontApi;
 using CustomersCanvasSample.Db;
 using CustomersCanvasSample.Models;
 using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CustomersCanvasSample.Services
 {
@@ -15,71 +15,87 @@ namespace CustomersCanvasSample.Services
     /// </summary>
     public class EcommerceDataService
     {
-        private ITemplatesApiClient templatesApiClient;
-        private IEcommerceProductReferencesApiClient productReferenceApiClient;
-        private CustomersCanvasOptions ccoptions;
-        private EcommerceContext dbcontext;
+        private readonly EcommerceContext _dbContext;
 
-        public EcommerceDataService(EcommerceContext dbcontext, ITemplatesApiClient templatesApiClient,
-            IEcommerceProductReferencesApiClient productReferenceApiClient,
-            IOptions<CustomersCanvasOptions> ccoptions)
+        private readonly IProductSpecificationsApiClient _productSpecificationsApiClient;
+        private readonly IProductReferencesApiClient _productReferencesApiClient;
+
+        private readonly CustomersCanvasOptions _options;
+
+        public EcommerceDataService(
+            EcommerceContext dbContext,
+            IProductSpecificationsApiClient productSpecificationsApiClient,
+            IProductReferencesApiClient productReferencesApiClient,
+            IOptions<CustomersCanvasOptions> options)
         {
-            this.dbcontext = dbcontext;
-            this.templatesApiClient = templatesApiClient;
-            this.productReferenceApiClient = productReferenceApiClient;
-            this.ccoptions = ccoptions.Value;
+            _dbContext = dbContext;
+            _productSpecificationsApiClient = productSpecificationsApiClient;
+            _productReferencesApiClient = productReferencesApiClient;
+            _options = options.Value;
         }
 
-        public IEnumerable<Product> GetTestProducts()
+        public IEnumerable<Product> GetProducts()
         {
-            return dbcontext.Products.ToList();
+            return _dbContext.Products.ToList();
         }
 
-        public IEnumerable<Product> GetConnectedProducts()
+        public async Task<IEnumerable<Product>> GetConnectedProducts()
         {
-            return dbcontext.Products.Where(p => p.TemplateId != null).ToList();
+            var products = GetProducts();
+
+            var productReferences = await _productReferencesApiClient.GetAllAsync(_options.StorefrontId);
+            if (productReferences.Total == 0)
+            {
+                return new List<Product>();
+            }
+
+            var ids = productReferences.Items.Select(r => r.ProductReference).ToList();
+
+            return products.Where(p => ids.Any(id => id == p.Id)).ToList();
         }
 
-        public Product GetProductById(string id)
+        public Product GetProductById(string productId)
         {
-            return dbcontext.Products.First(p => p.Id == id);
+            return _dbContext.Products.First(p => p.Id == productId);
         }
 
-        public void UpdateProductDetails(string id, string name, float price)
-        {
-            var product = GetProductById(id);
-            product.Name = name;
-            product.Price = price;
-            dbcontext.Products.Update(product);
-            dbcontext.SaveChanges();
-        }
-
-        public async Task<AdminProductModel> GetAdminProduct(string id)
-        {
-            var model = new AdminProductModel();
-            model.Product = GetProductById(id);
-            model.Templates = await templatesApiClient.GetAllAsync();
-            return model;
-        }
-
-        public async Task ConnectTemplate(string productId, int templateId)
-        {
-            await productReferenceApiClient.CreateAsync(productId, templateId, ccoptions.StorefrontId);
-            UpdateTemplateId(productId, templateId);
-        }
-
-        public async Task DisconnectTemplate(string productId, int templateId)
-        {
-            await productReferenceApiClient.DeleteAsync(productId, templateId, ccoptions.StorefrontId);
-            UpdateTemplateId(productId, null);
-        }
-
-        private void UpdateTemplateId(string productId, int? templateId)
+        public void UpdateProductDetails(string productId, string name, float price)
         {
             var product = GetProductById(productId);
-            product.TemplateId = templateId;
-            dbcontext.Products.Update(product);
-            dbcontext.SaveChanges();
+            product.Name = name;
+            product.Price = price;
+            _dbContext.Products.Update(product);
+            _dbContext.SaveChanges();
+        }
+
+        public async Task<ProductData> GetProductData(string productId)
+        {
+            var references = await _productReferencesApiClient.GetAllAsync(_options.StorefrontId, productReference: productId);
+            var specifications = await _productSpecificationsApiClient.GetAllAsync();
+
+            var result = new ProductData();
+            result.Product = GetProductById(productId);
+            result.Reference = references.Items?.FirstOrDefault();
+            result.Specifications = specifications.Total > 0
+                ? specifications.Items
+                : new List<ProductSpecificationDto>();
+            return result;
+        }
+
+        public async Task ConnectProduct(string productId, int productSpecificationId)
+        {
+            var body = new CreateProductReferenceDto()
+            {
+                ProductReference = productId,
+                ProductSpecificationId = productSpecificationId,
+            };
+
+            await _productReferencesApiClient.CreateAsync(_options.StorefrontId, body: body);
+        }
+
+        public async Task DisconnectProduct(string productId)
+        {
+            await _productReferencesApiClient.DeleteAsync(productId, _options.StorefrontId);
         }
 
         // start your numbers from 12345678
@@ -100,6 +116,5 @@ namespace CustomersCanvasSample.Services
                     return "Some user";
             }
         }
-            
     }
 }

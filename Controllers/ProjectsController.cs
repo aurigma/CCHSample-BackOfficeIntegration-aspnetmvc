@@ -1,25 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Aurigma.BackOffice;
+﻿using Aurigma.StorefrontApi;
+using CustomersCanvasSample.Models;
+using CustomersCanvasSample.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using CustomersCanvasSample.Services;
 using System.Linq;
 using System.Threading.Tasks;
-using CustomersCanvasSample.Models;
 
 namespace CustomersCanvasSample.Controllers
 {
     public class ProjectsController : Controller
     {
-        private IProjectsApiClient projectsApiClient;
-        public ProjectsController(IProjectsApiClient projectsApiClient)
+        private readonly IProjectsApiClient _projectsApiClient;
+        private readonly CustomersCanvasOptions _options;
+
+        public ProjectsController(
+            IProjectsApiClient projectsApiClient,
+            IOptions<CustomersCanvasOptions> options)
         {
-            this.projectsApiClient = projectsApiClient;
+            _projectsApiClient = projectsApiClient;
+            _options = options.Value;
         }
 
-        // POST: ProjectsController/Create
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] ProjectDetailsModel model)
+        public async Task<ActionResult> Create([FromBody] ProjectModel model)
         {
             CreateProjectDto project = new CreateProjectDto()
             {
@@ -27,12 +32,18 @@ namespace CustomersCanvasSample.Controllers
                 OrderNumber = EcommerceDataService.OrderIdToNumber(model.OrderId),
                 CustomerId = model.UserId,
                 CustomerName = EcommerceDataService.CustomerIdToName(model.UserId),
-                EcommerceProductId = model.ProductId,
-                Products = model.LineItems.ToList()
+                ProductReference = model.ProductId,
+                Items = model.Items.Select(x => new ProjectItemDto()
+                {
+                    DesignIds = x.StateId.ToList(),
+                    Fields = x.Fields,
+                    Hidden = x.Hidden,
+                }).ToList()
             };
-            var result = await projectsApiClient.CreateAsync(body: project);
+
+            var result = await _projectsApiClient.CreateAsync(_options.StorefrontId, body: project);
+
             return new OkObjectResult(result);
         }
-
     }
 }

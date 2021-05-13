@@ -24,7 +24,5 @@ namespace CustomersCanvasSample.Models
         public string Name { get; set; }
         public string ImageUrl { get; private set; }
         public float Price { get; set; }
-
-        public int? TemplateId { get; set; }
     }
 }

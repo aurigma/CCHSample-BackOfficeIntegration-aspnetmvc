@@ -1,8 +1,8 @@
-﻿@model AdminProductModel
+﻿@model ProductData
 
 @*
 	This is an example of a product management page. It consists of two parts - general product details (which is a part of your business logic)
-	and the connection of a product to a template you create in BackOffice. See the controller and EcommerceDataService source code for more 
+	and the connection of a product to a product specification you create in BackOffice. See the controller and EcommerceDataService source code for more 
 	information how to work with Customer's Canvas API.
 *@
 @{
@@ -10,7 +10,7 @@
 }
 <div class="container">
 	<h1>
-		@ViewData["Title"] <small class="text-muted"><a href="@Url.Action("Index", "AdminProducts")">Back</a></small>
+		@ViewData["Title"] <small class="text-muted"><a href="@Url.Action("Index", "Admin")">Back</a></small>
 	</h1>
 
 	<div class="accordion" id="product-management">
@@ -25,7 +25,7 @@
 
 			<div id="collapse-product-details" class="collapse show" aria-labelledby="heading-product-details" data-parent="#product-management">
 				<div class="card-body">
-					<form method="post" action="@Url.Action("UpdateProductDetails", "AdminProducts")">
+					<form method="post" action="@Url.Action("UpdateProductDetails", "Admin")">
 						<input type="hidden" value="@Model.Product.Id" name="id" />
 						<div class="form-group">
 							<label for="idfield">ID</label>
@@ -59,20 +59,20 @@
 
 			<div id="collapse-customerscanvas-connection" class="collapse show" aria-labelledby="heading-customerscanvas-connection" data-parent="#product-management">
 				<div class="card-body">
-					<form method="post" action="@Url.Action("ConnectTemplate", "AdminProducts")">
+					<form method="post" action="@Url.Action("ConnectProduct", "Admin")">
 						<input type="hidden" value="@Model.Product.Id" name="productId" />
 						<div class="form-group">
-							<label for="template-list">Choose a template</label>
+							<label for="specification-list">Choose a product specification</label>
 							<div class="form-group">
-								<select name="templateId" class="form-control" id="template-list">
-									@foreach(var template in Model.Templates.Items) {
-									<option selected="@(Model.Product.TemplateId == template.Id ? "selected": null)" value="@template.Id">@template.Name</option>
-								}
+								<select name="productSpecificationId" class="form-control" id="specification-list" disabled="@(Model.Reference != null)">
+									@foreach(var specification in Model.Specifications) {
+										<option selected="@(Model.Reference != null && Model.Reference.ProductSpecificationId == specification.Id ? "selected": null)" value="@specification.Id">@specification.Name</option>
+									}
 								</select>
 							</div>
 							<div class="form-group">
-								<button type="submit" class="btn btn-primary">Connect</button>
-								<button type="submit" class="btn btn-outline-danger" disabled="@(Model.Product.TemplateId == null)" formaction="@Url.Action("DisconnectTemplate", "AdminProducts")">Disconnect</button>
+								<button type="submit" class="btn btn-primary" disabled="@(Model.Reference != null)">Connect</button>
+								<button type="submit" class="btn btn-outline-danger" disabled="@(Model.Reference == null)" formaction="@Url.Action("DisconnectProduct", "Admin")">Disconnect</button>
 							</div>
 						</div>
 					</form>

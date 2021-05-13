@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Product>
+﻿@model AdminModel
 @*
 	This page is supposed to be a part of your admin panel. Here you have a list of the 
 	products published in your ecommerce system.
@@ -11,16 +11,18 @@
 <div class="container">
 	<h1>@ViewData["Title"]</h1>
 	<div class="list-group">
-		@foreach (var product in Model)
+		@foreach (var product in Model.Products)
 		{
-			<a href="@Url.Action("Edit", "AdminProducts", new { id = product.Id })" class="list-group-item list-group-item-action flex-column align-items-start">
+			<a href="@Url.Action("Edit", "Admin", new { id = product.Id })" class="list-group-item list-group-item-action flex-column align-items-start">
 				<div class="media">
 					<img class="mr-3" style="height: 64px" src="@product.ImageUrl" alt="@product.Name">
 					<div class="media-body">
 						<h5 class="mt-0">@product.Name</h5>
 						@product.Price
-						@if(product.TemplateId != null) {
-							<i class="fas fa-plug"></i>
+                        @foreach (var connectedProduct in Model.ConnectedProducts) {
+							@if (product.Id == connectedProduct.Id) {
+								<i class="fas fa-plug"></i>
+							}
 						}
 					</div>
 				</div>

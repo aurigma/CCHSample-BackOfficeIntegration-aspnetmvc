@@ -61,7 +61,7 @@ A version of the Design Editor installed at your account. [Contact our support t
 
 In addition to the storefront, you also need to register your application to get the authorization data. 
 
-Go to **Settings** -> **External apps**, then click **Create**. Give a name to your app and choose the permissions you want to provide it it. Then open it and copy the appropriate values to the settings.
+Go to **Settings** -> **External apps**, then click **Create**. Give a name to your app and choose the permissions you want to provide. Then open it and copy the appropriate values to the settings.
 
 Note, it is recommended to give as little rights as possible. For experimental purposes you may create an app with full permissions, but we would recommend deleting it once you finish exploring the API. 
 
@@ -115,27 +115,27 @@ When we are talking about integration of Customer's Canvas with some ecommerce p
 
 As usually, you want to do it in the admin panel of your ecommerce, in the same place where you manage your product catalog. 
 
-The **AdminProductsController.cs** contains a very simplified version of such admin panel. It works with a simple database of the "ecommerce system product" (based on SQLite for brevity). There are pretty standard actions like list and edit, and a several of Customers' Canvas specific ones.
+The **AdminController.cs** contains a very simplified version of such admin panel. It works with a simple database of the "ecommerce system product" (based on SQLite for brevity). There are pretty standard actions like list and edit, and a several of Customers' Canvas specific ones.
 
-Customer's Canvas stores the data you want to connect to the product in an entity called _Product Template_. The Templates store a link to the _editor_ (which is basically a UI Framework config) and the _attribute values_. Each editor may require different set of attributes. For example, a _Template-based Print Product_ requires you to provide a design while the _Blank Print Product_ requires a width and height. Go to your account, and create some templates.
+Customer's Canvas stores the data you want to connect to the product in an entity called _Product Specification_. The product specifications store a link to the _editor_ (which is basically an UI Framework config) and the _attribute values_. Each editor may require different set of attributes. For example, a _Template-based Print Product_ requires you to provide a design while the _Blank Print Product_ requires a width and height. Go to your account, and create some product specifications.
 
-To create a connection between a template and your product, it is necessary to create another entity in Customer's Canvas - _ecommerce product reference_. It binds three things together: the product in your system, the template, and the _storefront_. 
+To create a connection between a product specification and your product, it is necessary to create another entity in Customer's Canvas - _Product Reference_. It binds three things together: the product in your system, the Customer's Canvas product specification, and the _storefront_. 
 
-The `ConnectTemplate` action does this connection (and the `DisconnectTemplate` removes it). We just show a list of a all templates for each product and call the `ConnectTemplate` for a specified product.
+The `ConnectProduct` action does this connection (and the `DisconnectProduct` removes it). We just show a list of a all product specification for each product and call the `ConnectProduct` for a specified product.
  
 #### Opening the editor
 
-Now let's take a look what happens on the storefront. Here, you want to list all your products and when a user opens a product, display an editor as per the Template with the content as per the attributes the store employee have selected.
+Now let's take a look what happens on the storefront. Here, you want to list all your products and when a user opens a product, display an editor as per the Product Specification with the content as per the attributes the store employee have selected.
 
-To simplify things, we show here only the products which are associated with a template. The product page contains a Personalize button which leads to the **Personalize.cshtml** view. Here, we are using a special JS library called **storefront.main.js**. You may find it in **wwwroot/js** folder.
+To simplify things, we show here only the products which are associated with a product specifications. The product page contains a Personalize button which leads to the **Personalize.cshtml** view. Here, we are using a special JS library called **storefront.main.js**. You may find it in **wwwroot/js** folder.
 
 This script hides all the UI Framework complexities. All you need is to specify the product ID you want to load along with some init data. The script will do all the "heavy lifting".
 
-The only place where you need to add your custom logic is the code which executes when the user finishes editing and clicks "Add to cart" or "Finish" button. You can do it by adding the `onFinish` event handler. Here, you are receiving a JSON object representing a _project_ which will discuss in the next section.
+The only place where you need to add your custom logic is the code which executes when the user finishes editing and clicks "Add to cart" or "Finish" button. You can do it by adding the `onFinish` event handler. Here, you are receiving a JSON object representing a _Project_ which we will discuss in the next section.
 
 #### Saving the project
 
-The _project_ contains the information about user's personalization. Typically, it includes the _state id_ (a Private Design ID), _user id_, the order metadata as _fields_, and some other data.
+The _Project_ contains the information about user's personalization. Typically, it includes the _state id_ (a Private Design ID), _user id_, the order metadata as _fields_, and some other data.
 
 It is supposed that you should store the project object along with your shopping cart data. Once the customer completes the order and makes a payment, you need to create a Project in Customer's Canvas. 
 
@@ -145,7 +145,7 @@ To simplify things, we have omitted all the shopping cart functionality and subm
 
 For better understanding of what happens in this code, you may want to explore Customer's Canvas docs:
 
-  * [Official Customer's Canvas Developer Guide](https://customerscanvas.com/docfx/dev/intro.html) - storage services and BackOffice API
+  * [Official Customer's Canvas Developer Guide](https://customerscanvas.com/docfx/dev/intro.html) - storage services and Storefront API
   * [Documentation of classic Customer's Canvas Design Editor](https://customerscanvas.com/docs/cc/) - main editor app used by the end users (both frontend IFrame API library and backend API)
   * [IU Framework docs](https://customerscanvas.com/support/ui-framework) - a frontend technology which allows for extending the editor interface and making it better connected to your ecommerce platform.
 

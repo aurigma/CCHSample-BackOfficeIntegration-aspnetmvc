@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Aurigma.AssetStorage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Aurigma.AssetStorage;
 
 namespace CustomersCanvasSample.Models
 {
@@ -13,6 +13,7 @@ namespace CustomersCanvasSample.Models
             Path = path;
             Content = content;
         }
+
         public string Path { get; private set; }
         public FolderContentOfDesignDto Content { get; private set; }
     }
