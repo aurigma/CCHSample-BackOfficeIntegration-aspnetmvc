@@ -1,9 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Net;
 using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
 using Aurigma.DesignAtomsApi;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace CustomersCanvasSampleMVC.Controllers
 {
@@ -34,6 +38,12 @@ namespace CustomersCanvasSampleMVC.Controllers
                     var description = missingElement.Result.Description;
 
                     return NotFound($"{elementType} is missing: {description}");
+                }
+
+                if (apiClientException.StatusCode == (int)HttpStatusCode.UnprocessableEntity)
+                {
+                    var problemDetails = JsonConvert.DeserializeObject<ProblemDetails>(apiClientException.Response);
+                    return UnprocessableEntity(problemDetails.Detail);
                 }
 
                 throw;
