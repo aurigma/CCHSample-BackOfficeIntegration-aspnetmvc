@@ -1,10 +1,7 @@
-﻿using Aurigma.AssetProcessor;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Threading.Tasks;
+using Aurigma.AssetProcessor;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CustomersCanvasSample.Controllers
 {
@@ -17,7 +14,7 @@ namespace CustomersCanvasSample.Controllers
             _designProcessorApiClient = designProcessorApiClient;
         }
 
-        public async Task<Stream> Index(string id)
+        public async Task<Stream> Index(string id, int? surfaceIndex)
         {
             const string previewNamespace = "demoapp";
             const string previewName = "thumbnail";
@@ -30,6 +27,7 @@ namespace CustomersCanvasSample.Controllers
                 previewName,
                 previewWidth,
                 previewHeight,
+                surfaceIndex: surfaceIndex,
                 stub: true,
                 format: DesignPreviewFormat.Jpeg);
 

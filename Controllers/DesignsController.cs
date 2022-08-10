@@ -1,16 +1,14 @@
-﻿using Aurigma.AssetProcessor;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
+using Aurigma.AssetProcessor;
 using Aurigma.AssetStorage;
 using CustomersCanvasSample.Models;
 using CustomersCanvasSample.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CustomersCanvasSample.Controllers
 {
@@ -38,6 +36,17 @@ namespace CustomersCanvasSample.Controllers
             var folder = await _designsApiClient.GetFolderAsync(path);
 
             return View(new DesignsFolderModel(path, folder));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UploadDesign(IFormFile design)
+        {
+            using var openReadStream = design.OpenReadStream();
+            var fileParameter = new Aurigma.AssetProcessor.FileParameter(openReadStream, design.FileName);
+
+            await _designProcessorApiClient.ImportDesignAsync(sourceFile: fileParameter);
+
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Edit(string id, string name)

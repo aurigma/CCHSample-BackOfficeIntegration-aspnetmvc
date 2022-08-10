@@ -1,11 +1,11 @@
-﻿using Aurigma.StorefrontApi;
-using CustomersCanvasSample.Db;
-using CustomersCanvasSample.Models;
-using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Aurigma.StorefrontApi;
+using CustomersCanvasSample.Db;
+using CustomersCanvasSample.Models;
+using Microsoft.Extensions.Options;
 
 namespace CustomersCanvasSample.Services
 {
@@ -99,12 +99,12 @@ namespace CustomersCanvasSample.Services
         }
 
         // start your numbers from 12345678
-        static public int OrderIdToNumber(string id)
+        public static int OrderIdToNumber(string id)
         {
             return Math.Max(1001, int.Parse(id) - 12344677);
         }
 
-        static public string CustomerIdToName(string id)
+        public static string CustomerIdToName(string id)
         {
             switch (id)
             {

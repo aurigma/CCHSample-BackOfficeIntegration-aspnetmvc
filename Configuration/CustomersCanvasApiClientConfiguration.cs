@@ -1,15 +1,13 @@
-﻿using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace CustomersCanvasSample.Configuration
 {
     public class CustomersCanvasApiClientConfiguration:
         Aurigma.AssetStorage.IApiClientConfiguration,
         Aurigma.AssetProcessor.IApiClientConfiguration,
-        Aurigma.StorefrontApi.IApiClientConfiguration
+        Aurigma.StorefrontApi.IApiClientConfiguration,
+        Aurigma.DesignAtomsApi.IApiClientConfiguration
     {
         private CustomersCanvasOptions _options;
         private TokenService _tokenService;

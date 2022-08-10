@@ -1,21 +1,17 @@
-using Aurigma.AssetStorage;
+using System;
+using System.IO;
 using Aurigma.AssetProcessor;
+using Aurigma.AssetStorage;
+using Aurigma.DesignAtomsApi;
 using Aurigma.StorefrontApi;
+using CustomersCanvasSample.Db;
 using CustomersCanvasSample.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using CustomersCanvasSample.Db;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace CustomersCanvasSample
 {
@@ -36,10 +32,12 @@ namespace CustomersCanvasSample
             services.AddTransient<EcommerceDataService>();
 
             services.AddScoped<Aurigma.AssetStorage.IApiClientConfiguration, Configuration.CustomersCanvasApiClientConfiguration>();
+            services.AddScoped<Aurigma.DesignAtomsApi.IApiClientConfiguration, Configuration.CustomersCanvasApiClientConfiguration>();
             services.AddScoped<Aurigma.AssetProcessor.IApiClientConfiguration, Configuration.CustomersCanvasApiClientConfiguration>();
             services.AddScoped<Aurigma.StorefrontApi.IApiClientConfiguration, Configuration.CustomersCanvasApiClientConfiguration>();
 
             services.AddHttpClient<IDesignsApiClient, DesignsApiClient>();
+            services.AddHttpClient<IDesignAtomsServiceApiClient, DesignAtomsServiceApiClient>();
             services.AddHttpClient<IDesignProcessorApiClient, DesignProcessorApiClient>();
             services.AddHttpClient<IProductSpecificationsApiClient, ProductSpecificationsApiClient>();
             services.AddHttpClient<IProductReferencesApiClient, ProductReferencesApiClient>();

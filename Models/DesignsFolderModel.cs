@@ -1,8 +1,4 @@
 ﻿using Aurigma.AssetStorage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CustomersCanvasSample.Models
 {
@@ -14,7 +10,7 @@ namespace CustomersCanvasSample.Models
             Content = content;
         }
 
-        public string Path { get; private set; }
-        public FolderContentOfDesignDto Content { get; private set; }
+        public string Path { get; }
+        public FolderContentOfDesignDto Content { get; }
     }
 }

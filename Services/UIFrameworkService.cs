@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Text.Json;
 
 namespace CustomersCanvasSample.Services
@@ -30,13 +27,13 @@ namespace CustomersCanvasSample.Services
             return System.Text.Encoding.UTF8.GetString(stream.ToArray());
         }
 
-        public JsonDocument Config { get { return _config; } }
+        public JsonDocument Config => _config;
 
-        static public UIFrameworkService FromAppData(string configFileName)
+        public static UIFrameworkService FromAppData(string configFileName)
         {
-            using (StreamReader r = new StreamReader(configFileName))
+            using (var streamReader = new StreamReader(configFileName))
             {
-                return new UIFrameworkService(JsonDocument.Parse(r.BaseStream));
+                return new UIFrameworkService(JsonDocument.Parse(streamReader.BaseStream));
             }
         }
 
