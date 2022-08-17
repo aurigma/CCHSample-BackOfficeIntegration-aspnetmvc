@@ -46,6 +46,11 @@ namespace CustomersCanvasSampleMVC.Controllers
                     return UnprocessableEntity(problemDetails.Detail);
                 }
 
+                if (apiClientException is ApiClientException<Aurigma.DesignAtomsApi.ProblemDetails> generalProblem)
+                {
+                    return BadRequest($"Api return status code '{generalProblem.Result.Status}' and message: {generalProblem.Result.Detail}");
+                }
+
                 throw;
             }
 

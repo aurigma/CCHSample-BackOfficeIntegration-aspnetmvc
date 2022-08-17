@@ -56,37 +56,60 @@
         <div class="card-columns">
             @foreach (var item in Model.Content.Entities)
             {
-                var previewUrl = Url.Action("Index", "DesignPreview", new { id = item.Id });
                 <div class="card" style="width: 18rem;">
-                    <div class="card-body">
+
+                    <div class="card-header">
                         <h5 class="card-title">@item.Name</h5>
                         <p class="card-subtitle mb-2 text-muted">Last modified: @item.LastModified.ToString("dd MMM yyyy")</p>
                     </div>
-                    <img class="card-img-top" src="@previewUrl" alt="@item.Name">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <p style="margin-bottom: 0">Surfaces:</p>
-                            <ul>
+
+                    <div class="card-body">
+                        <div id="surfaceCarousel_@item.Id" class="carousel slide" data-ride="carousel" data-interval="false">
+                            <div class="carousel-inner">
+
+                                @{ var surfacesArray = item.Metadata.Surfaces.ToArray(); }
                                 @{
-                                    var surfaces = item.Metadata.Surfaces.ToArray();
-                                    for (int index = 0; index < surfaces.Length; ++index)
+                                    for (var surfaceIndex = 0; surfaceIndex < surfacesArray.Length; ++surfaceIndex)
                                     {
-                                        var surface = surfaces[index];
-                                        <li>
-                                            @index: @((surface.Height / 72).ToString("N2"))in x @((surface.Width / 72).ToString("N2"))in
-                                            <a href="#" class="card-link">@Html.ActionLink("Background", "ExtractBackground", controllerName: "DesignAtomsApi", new { id = item.Id, surfaceIndex = index })</a>
-                                        </li>
+                                        var s = surfacesArray[surfaceIndex];
+                                        <div class="carousel-item @(@surfaceIndex == 0 ? "active" : "") ">
+                                            <h6>Surface @(surfaceIndex + 1) / @surfacesArray.Length</h6>
+                                            <img class="card-img-top" src="@Url.Action("Index", "DesignPreview", new {id = item.Id, surfaceIndex = @surfaceIndex})" alt="@surfaceIndex">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item">
+                                                    <p class="card-text">Size: @((s.Height / 72).ToString("N2"))in x @((s.Width / 72).ToString("N2"))in</p>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <a href="#" class="card-link">@Html.ActionLink("Background", "ExtractBackground", controllerName: "DesignAtomsApi", new { id = item.Id, surfaceIndex = @surfaceIndex })</a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     }
                                 }
-                            </ul>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="#" class="card-link">@Html.ActionLink("Open with IFrame API", "Edit", new { id = item.Id, name = item.Name })</a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="#" class="card-link">@Html.ActionLink("Open with UI Framework", "EditWithUIF", new { id = item.Id, name = item.Name, configName = "standard-editor.json" })</a>
-                        </li>
-                    </ul>
+                            </div>
+                            @if (surfacesArray.Length > 1)
+                            {
+                                <a class="carousel-control-prev" href="#surfaceCarousel_@item.Id" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="false"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#surfaceCarousel_@item.Id" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="false"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <a href="#" class="card-link">@Html.ActionLink("Open with IFrame API", "Edit", new { id = item.Id, name = item.Name })</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#" class="card-link">@Html.ActionLink("Open with UI Framework", "EditWithUIF", new { id = item.Id, name = item.Name, configName = "standard-editor.json" })</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             }
         </div>

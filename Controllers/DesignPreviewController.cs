@@ -28,7 +28,8 @@ namespace CustomersCanvasSample.Controllers
                 previewWidth,
                 previewHeight,
                 surfaceIndex: surfaceIndex,
-                stub: true,
+                force: true, // slower, but show all surfaces
+                //stub: true, // faster, but don't work with multi surface states
                 format: DesignPreviewFormat.Jpeg);
 
             return previewBody.Stream;
