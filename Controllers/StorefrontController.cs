@@ -1,4 +1,5 @@
 ﻿using CustomersCanvasSample.Services;
+using CustomersCanvasSampleMVC.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
@@ -23,12 +24,26 @@ namespace CustomersCanvasSample.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _ecommerceDataService.GetConnectedProducts());
+            var connectedProducts = await _ecommerceDataService.GetConnectedProducts();
+            var connectedPimProducts = await _ecommerceDataService.GetConnectedPimProducts();
+            
+            return View(connectedProducts.Union(connectedPimProducts));
         }
 
         public IActionResult Edit(string id)
         {
-            return View(_ecommerceDataService.GetProductById(id));
+            var product = _ecommerceDataService.GetProductById(id);
+
+            ViewBag.TenantId = _options.TenantId;
+            ViewBag.BackOfficeUrl = _options.IdentityProviderUrl;
+            ViewBag.EcommerceSystemId = _options.StorefrontId;
+
+            return product.EditorType switch
+            {
+                EditorType.UIFramework => View(product),
+                EditorType.SimpleEditor => View("SimpleEditor", product),
+                _ => throw new NotImplementedException(),
+            };
         }
 
         public IActionResult Personalize(string id)

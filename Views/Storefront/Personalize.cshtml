@@ -38,7 +38,8 @@
 						items: project.line_items,
 						productId: "@Model.Id",
 						userId: userInfo.id,
-						orderId: orderId
+						orderId: orderId,
+						ownerId: userInfo.id
 					})
 				});
 				alert("Now the user's modifications are saved in your Customer's Canvas account.");

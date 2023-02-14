@@ -4,6 +4,7 @@ using Aurigma.AssetProcessor;
 using Aurigma.AssetStorage;
 using Aurigma.DesignAtomsApi;
 using Aurigma.StorefrontApi;
+using Aurigma.StorefrontApi.Products;
 using CustomersCanvasSample.Db;
 using CustomersCanvasSample.Services;
 using Microsoft.AspNetCore.Builder;
@@ -40,8 +41,9 @@ namespace CustomersCanvasSample
             services.AddHttpClient<IDesignAtomsServiceApiClient, DesignAtomsServiceApiClient>();
             services.AddHttpClient<IDesignProcessorApiClient, DesignProcessorApiClient>();
             services.AddHttpClient<IProductSpecificationsApiClient, ProductSpecificationsApiClient>();
-            services.AddHttpClient<IProductReferencesApiClient, ProductReferencesApiClient>();
+            services.AddHttpClient<Aurigma.StorefrontApi.IProductReferencesApiClient, Aurigma.StorefrontApi.ProductReferencesApiClient>();
             services.AddHttpClient<IProjectsApiClient, ProjectsApiClient>();
+            services.AddHttpClient<IProductsApiClient, ProductsApiClient>();
 
             services.AddDbContext<EcommerceContext>
                 (o => o.UseSqlite(Configuration.GetConnectionString("EcommerceData")));

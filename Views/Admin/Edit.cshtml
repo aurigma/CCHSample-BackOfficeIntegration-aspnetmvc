@@ -1,83 +1,124 @@
-﻿@model ProductData
+﻿@using CustomersCanvasSampleMVC.Enums
+@model ProductData
 
 @*
 	This is an example of a product management page. It consists of two parts - general product details (which is a part of your business logic)
-	and the connection of a product to a product specification you create in BackOffice. See the controller and EcommerceDataService source code for more 
+	and the connection of a product to a product specification you create in BackOffice. See the controller and EcommerceDataService source code for more
 	information how to work with Customer's Canvas API.
 *@
 @{
-	ViewData["Title"] = $"Manage {Model.Product.Name}";
+    ViewData["Title"] = $"Manage {Model.Product.Name}";
 }
 <div class="container">
-	<h1>
-		@ViewData["Title"] <small class="text-muted"><a href="@Url.Action("Index", "Admin")">Back</a></small>
-	</h1>
+    <h1>
+        @ViewData["Title"] <small class="text-muted"><a href="@Url.Action("Index", "Admin")">Back</a></small>
+    </h1>
 
-	<div class="accordion" id="product-management">
-		<div class="card">
-			<div class="card-header" id="heading-product-details">
-				<h5 class="mb-0">
-					<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-product-details" aria-expanded="false" aria-controls="collapse-product-details">
-						Product Details
-					</button>
-				</h5>
-			</div>
+    <div class="accordion" id="product-management">
+        <div class="card">
+            <div class="card-header" id="heading-product-details">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-product-details" aria-expanded="false" aria-controls="collapse-product-details">
+                        Product Details
+                    </button>
+                </h5>
+            </div>
 
-			<div id="collapse-product-details" class="collapse show" aria-labelledby="heading-product-details" data-parent="#product-management">
-				<div class="card-body">
-					<form method="post" action="@Url.Action("UpdateProductDetails", "Admin")">
-						<input type="hidden" value="@Model.Product.Id" name="id" />
-						<div class="form-group">
-							<label for="idfield">ID</label>
-							<input type="number" value="@Model.Product.Id" disabled="disabled" class="form-control" id="idfield" aria-describedby="idfieldhelp" placeholder="Enter SKU">
-							<small id="idfieldhelp" class="form-text text-muted">Your product ID.</small>
-						</div>
+            <div id="collapse-product-details" class="collapse show" aria-labelledby="heading-product-details" data-parent="#product-management">
+                <div class="card-body">
+                    <form method="post" action="@Url.Action("UpdateProductDetails", "Admin")">
+                        <input type="hidden" value="@Model.Product.Id" name="id" />
+                        <div class="form-group">
+                            <label for="idfield">ID</label>
+                            <input type="number" value="@Model.Product.Id" disabled="disabled" class="form-control" id="idfield" aria-describedby="idfieldhelp" placeholder="Enter SKU">
+                            <small id="idfieldhelp" class="form-text text-muted">Your product ID.</small>
+                        </div>
 
-						<div class="form-group">
-							<label for="namefield">Name</label>
-							<input name="name" type="text" value="@Model.Product.Name" class="form-control" id="namefield" aria-describedby="namefieldhelp" placeholder="Enter product name">
-							<small id="namefieldhelp" class="form-text text-muted">A human-readable product name.</small>
-						</div>
-						<div class="form-group">
-							<label for="pricefield">Price</label>
-							<input name="price" type="number" value="@Model.Product.Price" class="form-control" id="pricefield" aria-describedby="pricefieldhelp" placeholder="Enter price">
-							<small id="namefieldhelp" class="form-text text-muted">A price.</small>
-						</div>
-						<button type="submit" class="btn btn-primary">Save</button>
-					</form>
-				</div>
-			</div>
-		</div>
-		<div class="card">
-			<div class="card-header" id="heading-customerscanvas-connection">
-				<h5 class="mb-0">
-					<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-customerscanvas-connection" aria-expanded="true" aria-controls="collapse-customerscanvas-connection">
-						Connect to Customer's Canvas
-					</button>
-				</h5>
-			</div>
+                        <div class="form-group">
+                            <label for="namefield">Name</label>
+                            <input name="name" type="text" value="@Model.Product.Name" class="form-control" id="namefield" aria-describedby="namefieldhelp" placeholder="Enter product name">
+                            <small id="namefieldhelp" class="form-text text-muted">A human-readable product name.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="pricefield">Price</label>
+                            <input name="price" type="number" value="@Model.Product.Price" class="form-control" id="pricefield" aria-describedby="pricefieldhelp" placeholder="Enter price">
+                            <small id="namefieldhelp" class="form-text text-muted">A price.</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-			<div id="collapse-customerscanvas-connection" class="collapse show" aria-labelledby="heading-customerscanvas-connection" data-parent="#product-management">
-				<div class="card-body">
-					<form method="post" action="@Url.Action("ConnectProduct", "Admin")">
-						<input type="hidden" value="@Model.Product.Id" name="productId" />
-						<div class="form-group">
-							<label for="specification-list">Choose a product specification</label>
-							<div class="form-group">
-								<select name="productSpecificationId" class="form-control" id="specification-list" disabled="@(Model.Reference != null)">
-									@foreach(var specification in Model.Specifications) {
-										<option selected="@(Model.Reference != null && Model.Reference.ProductSpecificationId == specification.Id ? "selected": null)" value="@specification.Id">@specification.Name</option>
-									}
-								</select>
-							</div>
-							<div class="form-group">
-								<button type="submit" class="btn btn-primary" disabled="@(Model.Reference != null)">Connect</button>
-								<button type="submit" class="btn btn-outline-danger" disabled="@(Model.Reference == null)" formaction="@Url.Action("DisconnectProduct", "Admin")">Disconnect</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+        @if (Model.ProductIntegrationType == ProductIntegrationType.PIM)
+        {
+            <div class="card">
+                <div class="card-header" id="heading-integration-details">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-integrations-details" aria-expanded="false" aria-controls="collapse-integrations-details">
+                            Integration details
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapse-integration-details" class="collapse show" aria-labelledby="heading-integration-details" data-parent="#product-management">
+                    <div class="card-body">
+                        <form method="post" action="@Url.Action("UpdateIntegrationDetails", "Admin")">
+                            <input type="hidden" value="@Model.Product.Id" name="productId" />
+
+                            <label for="editor-type-list">Choose an editor type</label>
+                            <div class="form-group">
+                                <select name="productEditorType" class="form-control" id="editor-type-list">
+
+                                    @foreach (var editorType in Enum.GetValues(typeof(EditorType)))
+                                    {
+                                        <option selected="@((EditorType)editorType == Model.Product.EditorType ? "selected" : null)" value="@editorType">@editorType</option>
+                                    }
+
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (Model.ProductIntegrationType == ProductIntegrationType.ProductSpecification || Model.ProductIntegrationType == ProductIntegrationType.NoIntegration)
+        {
+            <div class="card">
+                <div class="card-header" id="heading-customerscanvas-connection">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-customerscanvas-connection" aria-expanded="true" aria-controls="collapse-customerscanvas-connection">
+                            Connect to Customer's Canvas
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapse-customerscanvas-connection" class="collapse show" aria-labelledby="heading-customerscanvas-connection" data-parent="#product-management">
+                    <div class="card-body">
+                        <form method="post" action="@Url.Action("ConnectProduct", "Admin")">
+                            <input type="hidden" value="@Model.Product.Id" name="productId" />
+                            <div class="form-group">
+                                <label for="specification-list">Choose a product specification</label>
+                                <div class="form-group">
+                                    <select name="productSpecificationId" class="form-control" id="specification-list" disabled="@(Model.Reference != null)">
+                                        @foreach (var specification in Model.Specifications)
+                                        {
+                                            <option selected="@(Model.Reference != null && Model.Reference.ProductSpecificationId == specification.Id ? "selected": null)" value="@specification.Id">@specification.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary" disabled="@(Model.Reference != null)">Connect</button>
+                                    <button type="submit" class="btn btn-outline-danger" disabled="@(Model.Reference == null)" formaction="@Url.Action("DisconnectProduct", "Admin")">Disconnect</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
 </div>

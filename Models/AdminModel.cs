@@ -10,5 +10,7 @@ namespace CustomersCanvasSample.Models
         public IEnumerable<Product> Products { get; set; }
 
         public IEnumerable<Product> ConnectedProducts { get; set; }
+
+        public IEnumerable<Product> ConnectedPimProducts { get; set; }
     }
 }

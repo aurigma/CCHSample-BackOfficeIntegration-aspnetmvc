@@ -1,6 +1,8 @@
 ﻿using CustomersCanvasSample.Models;
 using CustomersCanvasSample.Services;
+using CustomersCanvasSampleMVC.Enums;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,7 +23,8 @@ namespace CustomersCanvasSample.Controllers
             return View(new AdminModel()
             {
                 Products = _ecommerceDataService.GetProducts(),
-                ConnectedProducts = await _ecommerceDataService.GetConnectedProducts()
+                ConnectedProducts = await _ecommerceDataService.GetConnectedProducts(),
+                ConnectedPimProducts = await _ecommerceDataService.GetConnectedPimProducts()
             });
         }
 
@@ -50,6 +53,14 @@ namespace CustomersCanvasSample.Controllers
         public async Task<IActionResult> DisconnectProduct(string productId)
         {
             await _ecommerceDataService.DisconnectProduct(productId);
+
+            return View("Edit", await _ecommerceDataService.GetProductData(productId));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateIntegrationDetails(string productId, string productEditorType)
+        {
+            _ecommerceDataService.UpdateEditorType(productId, Enum.Parse<EditorType>(productEditorType));
 
             return View("Edit", await _ecommerceDataService.GetProductData(productId));
         }
