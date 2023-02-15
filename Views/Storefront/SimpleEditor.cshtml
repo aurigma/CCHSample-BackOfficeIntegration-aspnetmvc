@@ -24,16 +24,15 @@
 				// (and complete the order). For this example, we will just hardcode it.
 				const orderId = "12345678";
 
-                let lineItems = [];
-				let stateId = [];
-
-                stateId[0] = e.detail.key;
-                
-				lineItems[0] = {
-					stateId: stateId,
-                    fields: {},
-                    hidden: {}
-                };
+                const lineItems = [
+                    {
+                        stateId: [
+							e.detail.key
+						],
+						fields: {},
+						hidden: {}
+                    }
+                ];
 
 				await fetch("@Url.Action("Create", "Projects")", {
 					method: "post",
