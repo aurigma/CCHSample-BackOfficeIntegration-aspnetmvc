@@ -67,7 +67,7 @@ Note, it is recommended to give as little rights as possible. For experimental p
 
 ## How this app is organized? 
 
-The app is a traditional MVC application. The Views folder contains the frontend code ("vanilla JS" with Razor template engine), the Controllers folder is a "bridge" between the frontend and backend, the Services folder contains the code which does some work on the backend. The **Startup.cs** configures Dependency Injection, in particular, for the API Client libraries - see [Using API in a C# application tutorial](https://customerscanvas.com/docfx/dev/tutorials/cs-api-client.html?tabs=dotnetcore) for more information.
+The app is a traditional MVC application. The Views folder contains the frontend code ("vanilla JS" with Razor template engine), the Controllers folder is a "bridge" between the frontend and backend, the Services folder contains the code which does some work on the backend. The **Startup.cs** configures Dependency Injection, in particular, for the API Client libraries - see [Using API in a C# application tutorial](https://customerscanvas.com/dev/backoffice/cs-api-client.html?tabs=dotnetcore) for more information.
 
 This is a single application for several use cases. Right now there are two of them are implemented: 
 
@@ -90,13 +90,13 @@ It gives you an example how you can list all designs from a root folder of your 
 
 It explains how you can open a Design Editor using a classic IFrame API and download a result as an image. 
 
-You will find the information how to configure the editor and work with the IFrame API JS library at [classic Design Editor docs](https://customerscanvas.com/docs/cc/IframeApi-introduction.htm).
+You will find the information how to configure the editor and work with the IFrame API JS library at [classic Design Editor docs](https://customerscanvas.com/dev/editors/iframe-api/overview.html).
 
 #### EditWithUIF action
 
 It explains how you can open a Design Editor using a UI Framework JS library.  
 
-You will find the information how to create configs for UI Framework and how it works at [UI Framework guide](https://customerscanvas.com/support/ui-framework).
+You will find the information how to create configs for UI Framework and how it works at [UI Framework guide](https://customerscanvas.com/dev/editors/ui-framework/overview.html).
 
 > **NOTE:**
 > You may wonder what are the benefits of UI Framework vs IFrame API. Although IFrame API is easier to start with, UI Framework gives much more flexibility. It allows isolating all the editor specific code to separate JSON files called _configs_. This way you may store the editor settings separately from your code. 
@@ -175,8 +175,8 @@ To simplify things, we have omitted all the shopping cart functionality and subm
 
 For better understanding of what happens in this code, you may want to explore Customer's Canvas docs:
 
-  * [Official Customer's Canvas Developer Guide](https://customerscanvas.com/docfx/dev/intro.html) - storage services and Storefront API
-  * [Documentation of classic Customer's Canvas Design Editor](https://customerscanvas.com/docs/cc/) - main editor app used by the end users (both frontend IFrame API library and backend API)
-  * [IU Framework docs](https://customerscanvas.com/support/ui-framework) - a frontend technology which allows for extending the editor interface and making it better connected to your ecommerce platform.
+  * [Official Customer's Canvas Developer Center](https://customerscanvas.com/dev/)
+  * [Design Editor and UI Framework](https://customerscanvas.com/dev/editors/overview.html) - a documentation section which covers the editor SDKs.
+  * [BackOffice and other backend services API](https://customerscanvas.com/dev/backoffice/intro.html).
 
 If you run into any problems, feel free to [contact our support team](https://customerscanvas.com/account/cases). We will be happy to discuss your scenarios and help you to get started.
