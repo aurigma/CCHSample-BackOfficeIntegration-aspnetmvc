@@ -65,11 +65,11 @@ namespace CustomersCanvasSample.Services
 
             var pimStorefrontProductIds = new List<string>();
 
-            var pimProducts = await _productsApiClient.GetAllProductsAsync(tenantId: 10140);
+            var pimProducts = await _productsApiClient.GetAllProductsAsync(tenantId: _options.TenantId);
 
             foreach (var pimProduct in pimProducts.Items)
             {
-                var links = await _productsApiClient.GetProductLinksAsync(pimProduct.Id, tenantId: 10140);
+                var links = await _productsApiClient.GetProductLinksAsync(pimProduct.Id, tenantId: _options.TenantId);
 
                 pimStorefrontProductIds.AddRange(links.Items.Select(x => x.StorefrontProductId));
             }
@@ -131,11 +131,11 @@ namespace CustomersCanvasSample.Services
         {
             var pimStorefrontProductIds = new List<string>();
 
-            var pimProducts = await _productsApiClient.GetAllProductsAsync(tenantId: 10140);
+            var pimProducts = await _productsApiClient.GetAllProductsAsync(tenantId: _options.TenantId);
 
             foreach (var pimProduct in pimProducts.Items)
             {
-                var links = await _productsApiClient.GetProductLinksAsync(pimProduct.Id, tenantId: 10140);
+                var links = await _productsApiClient.GetProductLinksAsync(pimProduct.Id, tenantId: _options.TenantId);
 
                 pimStorefrontProductIds.AddRange(links.Items.Select(x => x.StorefrontProductId));
             }
