@@ -133,7 +133,9 @@ To create a connection between a PIM product in Customer's Canvas and your produ
  
 #### Opening the editor
 
-Now let's take a look what happens on the storefront. Here, you want to list all your products and when a user opens a product, display an editor. Customer’s Canvas support 2 editors type: UI Framework for Product specification and both UI Framework and Simple Editor for Product information management.
+Now let's take a look what happens on the storefront. Here, you want to list all your products and when a user opens a product, display an editor. 
+
+Customer’s Canvas support 2 editors type: UI Framework for Product specification and both UI Framework and Simple Editor for Product information management.
 
 ##### UI Framework
 
@@ -141,7 +143,7 @@ The product page contains a Personalize button which leads to the **Personalize.
 
 To show how "Populating Products with Predefined Data" feature works, the checkbox was added in product page. When it checked, the UI Framework loads with predefined user data, which is hardcoded in **Personalize.cshtml** for simplicity.
 
-Here, we are using a special JS library called **storefront.main.js**. You may find it in **wwwroot/js** folder.
+In **Personalize.cshtml**, we are using a special JS library called **storefront.main.js**. You may find it in **wwwroot/js** folder.
 
 This script hides all the UI Framework complexities. All you need is to specify the product ID you want to load along with some init data. The script will do all the "heavy lifting".
 
