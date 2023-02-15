@@ -127,21 +127,25 @@ The `ConnectProduct` action does this connection (and the `DisconnectProduct` re
 
 ##### Product information management (PIM)
 
-Product information management is another way to connect data in Customer’s Canvas and product in ecommerce system. Product information management allows you to create product model in Customer’s Canvas and specific options for it. Based on combinations of these options you can generate product variants and connect them to designs. Each variant can be connected to it`s own design. 
+Product information management is another way to connect data in Customer's Canvas and product in ecommerce system. Product information management allows you to create product model in Customer’s Canvas and specific options for it. Based on combinations of these options you can generate product variants and connect them to designs. Each variant can be connected to it's own design. 
 
-To create a connection between a PIM product in Customer's Canvas and your product it is necessary to create another entity in Customer’s Canvas - _Product Link_. It can be done in _Links_ tab of Product information management page. 
+To create a connection between a PIM product in Customer's Canvas and your product it is necessary to create another entity in Customer's Canvas - a _Product Link_. It can be done in _Links_ tab of Product information management page. 
+ 
+You can learn more about managing PIM in Customer's Canvas Help center: 
+
+https://customerscanvas.com/help/admin-guide/pim/intro.html
  
 #### Opening the editor
 
 Now let's take a look what happens on the storefront. Here, you want to list all your products and when a user opens a product, display an editor. 
 
-Customer’s Canvas support 2 editors type: UI Framework for Product specification and both UI Framework and Simple Editor for Product information management.
+Customer's Canvas support several types of editors (or _workflows_): UI Framework for Product specification and both UI Framework and Simple Editor for Product information management.
 
 ##### UI Framework
 
 The product page contains a Personalize button which leads to the **Personalize.cshtml** view. 
 
-To show how "Populating Products with Predefined Data" feature works, the checkbox was added in product page. When it checked, the UI Framework loads with predefined user data, which is hardcoded in **Personalize.cshtml** for simplicity.
+To show how "Populating Products with Predefined Data" feature works, the checkbox was added in product page. When it checked, the UI Framework loads with predefined user data, which is hardcoded in **Personalize.cshtml** for simplicity. It is supposed that you will add your own code which supplies such data from your backend application.
 
 In **Personalize.cshtml**, we are using a special JS library called **storefront.main.js**. You may find it in **wwwroot/js** folder.
 
@@ -153,7 +157,11 @@ The only place where you need to add your custom logic is the code which execute
 
 Simple editor works in another way. When the product page is opened, Simple editor instantaneously replaces product page content with it`s interface. Simple editor script can be found in **SimpleEditor.cshtml**. 
 
+> NOTE: Simple Editor does not rely on storefrontjs library. However, it requires its own scripts. They are published on Aurigma's CDN (see the code) and maintained/updated by Aurigma on a regular basis.
+
 The only place where you need to add your custom logic is the code which executes when the user finishes editing and clicks “Add to cart” button. You can do it by adding the `addtocart` event handler. Here, you are receiving a JSON object representing a Project which we will discuss in the next section.
+
+> NOTE: At this moment, Simple Editor does not support populating a design with external data.
 
 #### Saving the project
 
