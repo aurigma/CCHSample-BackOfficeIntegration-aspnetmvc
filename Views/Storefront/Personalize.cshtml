@@ -15,7 +15,22 @@
 				pluginSettings: { currency: 'USD' }
 			});
 
-			const userInfo = { id: "1234" }; // pass a real user id of your customers here
+			const userInfo = {id: "1234" }; // pass a real user id of your customers here
+			
+            let useUserInfo = @ViewBag.UseUserInfo.ToString().ToLower();
+            if (useUserInfo == true) {
+				
+				// Here you can predefine design fields with user information
+                userInfo.data = {
+					"Name": "TestName (predefined in userInfo)",
+					"Email": "test@mail.com (predefined in userInfo)",
+					"Your Name": "TestName (predefined in userInfo)",
+					"Position": "Position (predefined in userInfo)",
+					"Phone Number": "000-000-000 (predefined in userInfo)",
+					"Your address": "Test address (predefined in userInfo)",
+					"Your Email": "test@mail.com (predefined in userInfo)"
+				}
+			}
 
 			const container = document.getElementById('editor-container');
 

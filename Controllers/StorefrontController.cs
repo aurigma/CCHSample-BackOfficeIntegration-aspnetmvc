@@ -26,7 +26,7 @@ namespace CustomersCanvasSample.Controllers
         {
             var connectedProducts = await _ecommerceDataService.GetConnectedProducts();
             var connectedPimProducts = await _ecommerceDataService.GetConnectedPimProducts();
-            
+
             return View(connectedProducts.Union(connectedPimProducts));
         }
 
@@ -46,10 +46,11 @@ namespace CustomersCanvasSample.Controllers
             };
         }
 
-        public IActionResult Personalize(string id)
+        public IActionResult Personalize(string id, bool UseUserInfo)
         {
             ViewBag.TenantId = _options.TenantId;
             ViewBag.BackOfficeUrl = _options.IdentityProviderUrl;
+            ViewBag.UseUserInfo = UseUserInfo;
 
             return View(_ecommerceDataService.GetProductById(id));
         }

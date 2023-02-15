@@ -44,7 +44,7 @@
 			<h5>SKU <span class="sku-holder">@Model.Id</span></h5>
 			<h2>@Model.Name</h2>
 			<h4>@Model.Price.ToString("C", new CultureInfo("en-US"))</h4>
-			<form>
+			<form method="get" action="@Url.Action("Personalize", "Storefront")">
 				<div class="form-group">
 					<label for="quantity-group">Quantity</label>
 					<div class="input-group">
@@ -65,7 +65,12 @@
 						<option>Value 2</option>
 					</select>
 				</div>
-				<a id="customize-button" href="@Url.Action("Personalize", "Storefront", new { id = Model.Id })" class="btn btn-primary btn-lg">Personalize</a>
+				<input type="hidden" value="@Model.Id" name="id" />
+				<button type="submit" class="btn btn-primary btn-lg">Personalize</button>
+				<div class="form-group">
+					<label for="UseUserInfo">Load editor with predefined user info?</label>
+					<input type="checkbox" data-val="true" id="UseUserInfo" name="UseUserInfo" value="true">
+				</div>
 			</form>
 			<div class="card m-1">
 				<div class="card-body">
