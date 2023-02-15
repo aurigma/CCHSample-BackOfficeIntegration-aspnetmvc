@@ -117,21 +117,41 @@ As usually, you want to do it in the admin panel of your ecommerce, in the same 
 
 The **AdminController.cs** contains a very simplified version of such admin panel. It works with a simple database of the "ecommerce system product" (based on SQLite for brevity). There are pretty standard actions like list and edit, and a several of Customers' Canvas specific ones.
 
+##### Product specification
+
 Customer's Canvas stores the data you want to connect to the product in an entity called _Product Specification_. The product specifications store a link to the _editor_ (which is basically an UI Framework config) and the _attribute values_. Each editor may require different set of attributes. For example, a _Template-based Print Product_ requires you to provide a design while the _Blank Print Product_ requires a width and height. Go to your account, and create some product specifications.
 
 To create a connection between a product specification and your product, it is necessary to create another entity in Customer's Canvas - _Product Reference_. It binds three things together: the product in your system, the Customer's Canvas product specification, and the _storefront_. 
 
 The `ConnectProduct` action does this connection (and the `DisconnectProduct` removes it). We just show a list of a all product specification for each product and call the `ConnectProduct` for a specified product.
+
+##### Product information management (PIM)
+
+Product information management is another way to connect data in Customer’s Canvas and product in ecommerce system. Product information management allows you to create product model in Customer’s Canvas and specific options for it. Based on combinations of these options you can generate product variants and connect them to designs. Each variant can be connected to it`s own design. 
+
+To create a connection between a PIM product in Customer's Canvas and your product it is necessary to create another entity in Customer’s Canvas - _Product Link_. It can be done in _Links_ tab of Product information management page. 
  
 #### Opening the editor
 
-Now let's take a look what happens on the storefront. Here, you want to list all your products and when a user opens a product, display an editor as per the Product Specification with the content as per the attributes the store employee have selected.
+Now let's take a look what happens on the storefront. Here, you want to list all your products and when a user opens a product, display an editor. Customer’s Canvas support 2 editors type: UI Framework for Product specification and both UI Framework and Simple Editor for Product information management.
 
-To simplify things, we show here only the products which are associated with a product specifications. The product page contains a Personalize button which leads to the **Personalize.cshtml** view. Here, we are using a special JS library called **storefront.main.js**. You may find it in **wwwroot/js** folder.
+##### UI Framework
+
+The product page contains a Personalize button which leads to the **Personalize.cshtml** view. 
+
+To show how "Populating Products with Predefined Data" feature works, the checkbox was added in product page. When it checked, the UI Framework loads with predefined user data, which is hardcoded in **Personalize.cshtml** for simplicity.
+
+Here, we are using a special JS library called **storefront.main.js**. You may find it in **wwwroot/js** folder.
 
 This script hides all the UI Framework complexities. All you need is to specify the product ID you want to load along with some init data. The script will do all the "heavy lifting".
 
 The only place where you need to add your custom logic is the code which executes when the user finishes editing and clicks "Add to cart" or "Finish" button. You can do it by adding the `onFinish` event handler. Here, you are receiving a JSON object representing a _Project_ which we will discuss in the next section.
+
+##### Simple editor
+
+Simple editor works in another way. When the product page is opened, Simple editor instantaneously replaces product page content with it`s interface. Simple editor script can be found in **SimpleEditor.cshtml**. 
+
+The only place where you need to add your custom logic is the code which executes when the user finishes editing and clicks “Add to cart” button. You can do it by adding the `addtocart` event handler. Here, you are receiving a JSON object representing a Project which we will discuss in the next section.
 
 #### Saving the project
 
