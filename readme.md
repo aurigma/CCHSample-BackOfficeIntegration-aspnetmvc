@@ -51,12 +51,10 @@ Choose type **Custom**. Fill the **Name** and **Allow at** fields. You may leave
 
 #### IdentityProviderUrl / ApiUrl
 
-Depending on which server cluster you use, set it to 
-- `https://customerscanvashub.com` and `https://api.customerscanvashub.com` for America and Australia,
-or to 
-- `https://eu.customerscanvashub.com` and `https://api.eu.customerscanvashub.com` for Europe. 
-
-In extremely rare cases you may use your own installation of CC Hub, in this case get the links from your IT. 
+The identity provider and base API URL depends on the location of Customer's Canvas cluster where your tenant is deployed. Possible options are: 
+- You are on our infrastructure and your region is America and Australia - `https://customerscanvashub.com` and `https://api.customerscanvashub.com`
+- You are on our infrastructure and your region is Europe - `https://eu.customerscanvashub.com` and `https://api.eu.customerscanvashub.com`. 
+- You host your own Customer's Canvas instance - refer your IT department.
 
 #### DesignEditorVersion
 
