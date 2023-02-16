@@ -13,16 +13,16 @@ namespace CustomersCanvasSample.Controllers
     public class StorefrontController : Controller
     {
         private EcommerceDataService _ecommerceDataService;
-        private readonly DataSourceService _dataSourceServcie;
+        private readonly DataSourceService _dataSourceService;
         private CustomersCanvasOptions _options;
 
         public StorefrontController(
             EcommerceDataService ecommerceDataService,
-            DataSourceService dataSourceServcie,
+            DataSourceService dataSourceService,
             IOptions<CustomersCanvasOptions> options)
         {
             _ecommerceDataService = ecommerceDataService;
-            _dataSourceServcie = dataSourceServcie;
+            _dataSourceService = dataSourceService;
             _options = options.Value;
         }
 
@@ -63,7 +63,7 @@ namespace CustomersCanvasSample.Controllers
             // It is supposed that user is authorised.
             // Otherwise the session should be generated.
             ViewBag.UserId = 1234;
-            ViewBag.Data = _dataSourceServcie.GetDataForTemplate();
+            ViewBag.Data = _dataSourceService.GetDataForTemplate();
 
             return View(_ecommerceDataService.GetProductById(id));
         }
