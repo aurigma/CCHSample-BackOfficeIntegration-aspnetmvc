@@ -7,6 +7,7 @@ using Aurigma.StorefrontApi;
 using Aurigma.StorefrontApi.Products;
 using CustomersCanvasSample.Db;
 using CustomersCanvasSample.Services;
+using CustomersCanvasSampleMVC.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,7 @@ namespace CustomersCanvasSample
             services.Configure<CustomersCanvasOptions>(Configuration.GetSection(CustomersCanvasOptions.SectionName));
             services.AddSingleton<TokenService>();
             services.AddTransient<EcommerceDataService>();
+            services.AddTransient<DataSourceService>();
 
             services.AddScoped<Aurigma.AssetStorage.IApiClientConfiguration, Configuration.CustomersCanvasApiClientConfiguration>();
             services.AddScoped<Aurigma.DesignAtomsApi.IApiClientConfiguration, Configuration.CustomersCanvasApiClientConfiguration>();

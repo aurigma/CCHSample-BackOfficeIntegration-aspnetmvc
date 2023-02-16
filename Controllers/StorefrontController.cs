@@ -1,5 +1,6 @@
 ﻿using CustomersCanvasSample.Services;
 using CustomersCanvasSampleMVC.Enums;
+using CustomersCanvasSampleMVC.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
@@ -12,13 +13,16 @@ namespace CustomersCanvasSample.Controllers
     public class StorefrontController : Controller
     {
         private EcommerceDataService _ecommerceDataService;
+        private readonly DataSourceService _dataSourceServcie;
         private CustomersCanvasOptions _options;
 
         public StorefrontController(
             EcommerceDataService ecommerceDataService,
+            DataSourceService dataSourceServcie,
             IOptions<CustomersCanvasOptions> options)
         {
             _ecommerceDataService = ecommerceDataService;
+            _dataSourceServcie = dataSourceServcie;
             _options = options.Value;
         }
 
@@ -38,6 +42,10 @@ namespace CustomersCanvasSample.Controllers
             ViewBag.BackOfficeUrl = _options.IdentityProviderUrl;
             ViewBag.EcommerceSystemId = _options.StorefrontId;
 
+            // It is supposed that user is authorised.
+            // Otherwise the session should be generated.
+            ViewBag.UserId = 1234;
+
             return product.EditorType switch
             {
                 EditorType.UIFramework => View(product),
@@ -46,11 +54,16 @@ namespace CustomersCanvasSample.Controllers
             };
         }
 
-        public IActionResult Personalize(string id, bool UseUserInfo)
+        public IActionResult Personalize(string id, bool LoadDataToTemplate)
         {
             ViewBag.TenantId = _options.TenantId;
             ViewBag.BackOfficeUrl = _options.IdentityProviderUrl;
-            ViewBag.UseUserInfo = UseUserInfo;
+            ViewBag.LoadDataToTemplate = LoadDataToTemplate;
+
+            // It is supposed that user is authorised.
+            // Otherwise the session should be generated.
+            ViewBag.UserId = 1234;
+            ViewBag.Data = _dataSourceServcie.GetDataForTemplate();
 
             return View(_ecommerceDataService.GetProductById(id));
         }

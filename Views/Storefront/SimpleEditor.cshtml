@@ -1,7 +1,6 @@
 ﻿@model Product
 
 @section Scripts {
-	<script src="~/js/storefront.main.js"></script>
 
 	<script type="module">
 		
@@ -11,10 +10,10 @@
             
 			simpleEditor.setEditorConfig({
 				backOfficeUrl: "@ViewBag.BackOfficeUrl",
-				tenantId: "@ViewBag.TenantId",
+				tenantId: @ViewBag.TenantId,
 				product: { id: @Model.Id },
-				user: { id: "1234" },
-				ecommerceSystemId: "ViewBag.EcommerceSystemId"
+				user: { id: "@ViewBag.UserId" },
+				ecommerceSystemId: @ViewBag.EcommerceSystemId
 			});
 
 			simpleEditor.addEventListener("addtocart", async (e) => {
@@ -42,9 +41,9 @@
 					body: JSON.stringify({
 						items: lineItems,
 						productId: "@Model.Id",
-						userId: "1234",
+						userId: "@ViewBag.UserId",
 						orderId: orderId,
-						ownerId: "1234"
+						ownerId: "@ViewBag.UserId"
 					})
 				});
 
@@ -56,10 +55,10 @@
 
 	</script>
 
-	<script src="https://staticjs.blob.core.windows.net/simple-editor/stable/editor.js"></script>
+	<script src="https://staticjs-aurigma.azureedge.net/simple-editor/stable/editor.js"></script>
 }
 
-<link rel="stylesheet" href="https://staticjs.blob.core.windows.net/simple-editor/stable/styles.css">
+<link rel="stylesheet" href="https://staticjs-aurigma.azureedge.net/simple-editor/stable/styles.css">
 
 <au-simple-editor></au-simple-editor>
 
