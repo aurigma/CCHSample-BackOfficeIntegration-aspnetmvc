@@ -51,7 +51,12 @@ Choose type **Custom**. Fill the **Name** and **Allow at** fields. You may leave
 
 #### IdentityProviderUrl / ApiUrl
 
-Unless you are using an on-premises version of Customer's Canvas, set it to `https://customerscanvashub.com` and `https://api.customerscanvashub.com` correspondingly.
+Depending on which server cluster you use, set it to 
+- `https://customerscanvashub.com` and `https://api.customerscanvashub.com` for America and Australia,
+or to 
+- `https://eu.customerscanvashub.com` and `https://api.eu.customerscanvashub.com` for Europe. 
+
+In extremely rare cases you may use your own installation of CC Hub, in this case get the links from your IT. 
 
 #### DesignEditorVersion
 
@@ -72,7 +77,7 @@ The app is a traditional MVC application. The Views folder contains the frontend
 This is a single application for several use cases. Right now there are two of them are implemented: 
 
 1. Demo 1 - editing a design from Customer's Canvas directly (no specific ecommerce integration)
-2. Demo 2 - integrating Customer's Canvas to an ecommerce system
+2. (Recommended) Demo 2 - integrating Customer's Canvas to an ecommerce system
 
 Let's describe each of them in more detail.
 
@@ -103,7 +108,7 @@ You will find the information how to create configs for UI Framework and how it 
 > So if you offer your customers more than a single product category, it is highly recommended to use UI Framework approach. 
 > BTW, the UI Framework is used if you are integrating editors from BackOffice (see the next section).
 
-### Integrate with e-commerce platform
+### (Recommended) Integrate with e-commerce platform
 
 When we are talking about integration of Customer's Canvas with some ecommerce platform, as usual, the following tasks arise: 
 
@@ -125,16 +130,19 @@ To create a connection between a product specification and your product, it is n
 
 The `ConnectProduct` action does this connection (and the `DisconnectProduct` removes it). We just show a list of a all product specification for each product and call the `ConnectProduct` for a specified product.
 
-##### Product information management (PIM)
+##### Products (PIM)
 
-Product information management is another way to connect data in Customer's Canvas and product in ecommerce system. Product information management allows you to create product model in Customer’s Canvas and specific options for it. Based on combinations of these options you can generate product variants and connect them to designs. Each variant can be connected to it's own design. 
+Products (PIM) is a new, recomended way of connecting data in Customer's Canvas and product in ecommerce system. Products (PIM) allows you to create product model in Customer’s Canvas and specific options for it. Based on combinations of these options you can generate product variants and connect them to designs. Each variant can be connected to it's own design. 
 
-To create a connection between a PIM product in Customer's Canvas and your product it is necessary to create another entity in Customer's Canvas - a _Product Link_. It can be done in _Links_ tab of Product information management page. 
+To create a connection between a Product (PIM) in Customer's Canvas and your product it is necessary to create another entity in Customer's Canvas - a _Product Link_. It can be done in _Links_ tab of Product information management page. 
  
 You can learn more about managing PIM in Customer's Canvas Help center: 
 
 https://customerscanvas.com/help/admin-guide/pim/intro.html
- 
+
+> Note: At the time being, there is no way of fetching Storefront Product IDs from your system, so you have to type it in manually. Luckily, these IDs don't change frequently and typically there are only a handful of them (because they correspond to product categories, not individual products).
+
+
 #### Opening the editor
 
 Now let's take a look what happens on the storefront. Here, you want to list all your products and when a user opens a product, display an editor. 
