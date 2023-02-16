@@ -15,7 +15,14 @@
 				pluginSettings: { currency: 'USD' }
 			});
 
-			const userInfo = { id: "1234" }; // pass a real user id of your customers here
+			const userInfo = {id: "@ViewBag.UserId" };
+			
+            let loadDataToTemplate = @ViewBag.LoadDataToTemplate.ToString().ToLower();
+            if (loadDataToTemplate == true) {
+				
+				// Here you can loaad predefined information in template
+                userInfo.data = @Json.Serialize(ViewBag.Data);
+			}
 
 			const container = document.getElementById('editor-container');
 
@@ -38,7 +45,8 @@
 						items: project.line_items,
 						productId: "@Model.Id",
 						userId: userInfo.id,
-						orderId: orderId
+						orderId: orderId,
+						ownerId: userInfo.id
 					})
 				});
 				alert("Now the user's modifications are saved in your Customer's Canvas account.");

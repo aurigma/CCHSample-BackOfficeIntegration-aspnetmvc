@@ -1,0 +1,65 @@
+﻿@model Product
+
+@section Scripts {
+
+	<script type="module">
+		
+		document.addEventListener("DOMContentLoaded", async function (event) {
+			
+			const simpleEditor = document.getElementsByTagName("au-simple-editor").item(0);
+            
+			simpleEditor.setEditorConfig({
+				backOfficeUrl: "@ViewBag.BackOfficeUrl",
+				tenantId: @ViewBag.TenantId,
+				product: { id: @Model.Id },
+				user: { id: "@ViewBag.UserId" },
+				ecommerceSystemId: @ViewBag.EcommerceSystemId
+			});
+
+			simpleEditor.addEventListener("addtocart", async (e) => {
+                // It is supposed that this code is called from a Shopping Cart, but for 
+				// simplicity, we do it immediately. As a part of the Project Data you need
+				// to send an Order ID which is normally known by the time when you checkout
+				// (and complete the order). For this example, we will just hardcode it.
+				const orderId = "12345678";
+
+                const lineItems = [
+                    {
+                        stateId: [
+							e.detail.key
+						],
+						fields: {},
+						hidden: {}
+                    }
+                ];
+
+				await fetch("@Url.Action("Create", "Projects")", {
+					method: "post",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						items: lineItems,
+						productId: "@Model.Id",
+						userId: "@ViewBag.UserId",
+						orderId: orderId,
+						ownerId: "@ViewBag.UserId"
+					})
+				});
+
+				alert("Now the user's modifications are saved in your Customer's Canvas account.");
+				window.location = "@Url.Action("Index", "Storefront")";
+			});
+
+		});
+
+	</script>
+
+	<script src="https://staticjs-aurigma.azureedge.net/simple-editor/stable/editor.js"></script>
+}
+
+<link rel="stylesheet" href="https://staticjs-aurigma.azureedge.net/simple-editor/stable/styles.css">
+
+<au-simple-editor></au-simple-editor>
+
+

@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aurigma.AssetProcessor.ApiClient" Version="2.26.1.12607" />
-    <PackageReference Include="Aurigma.AssetStorage.ApiClient" Version="2.26.1.12606" />
-    <PackageReference Include="Aurigma.DesignAtomsApi.ApiClient" Version="2.26.7.12666" />
-    <PackageReference Include="Aurigma.StorefrontApi.ApiClient" Version="2.13.1.12610" />
+    <PackageReference Include="Aurigma.AssetProcessor.ApiClient" Version="2.36.1.14766" />
+    <PackageReference Include="Aurigma.AssetStorage.ApiClient" Version="2.36.2.14800" />
+    <PackageReference Include="Aurigma.DesignAtomsApi.ApiClient" Version="2.36.1.14768" />
+    <PackageReference Include="Aurigma.StorefrontApi.ApiClient" Version="2.21.37.14839" />
     <PackageReference Include="IdentityModel" Version="4.4.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.2">

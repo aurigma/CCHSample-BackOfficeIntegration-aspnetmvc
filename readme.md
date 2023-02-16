@@ -67,7 +67,7 @@ Note, it is recommended to give as little rights as possible. For experimental p
 
 ## How this app is organized? 
 
-The app is a traditional MVC application. The Views folder contains the frontend code ("vanilla JS" with Razor template engine), the Controllers folder is a "bridge" between the frontend and backend, the Services folder contains the code which does some work on the backend. The **Startup.cs** configures Dependency Injection, in particular, for the API Client libraries - see [Using API in a C# application tutorial](https://customerscanvas.com/docfx/dev/tutorials/cs-api-client.html?tabs=dotnetcore) for more information.
+The app is a traditional MVC application. The Views folder contains the frontend code ("vanilla JS" with Razor template engine), the Controllers folder is a "bridge" between the frontend and backend, the Services folder contains the code which does some work on the backend. The **Startup.cs** configures Dependency Injection, in particular, for the API Client libraries - see [Using API in a C# application tutorial](https://customerscanvas.com/dev/backoffice/cs-api-client.html?tabs=dotnetcore) for more information.
 
 This is a single application for several use cases. Right now there are two of them are implemented: 
 
@@ -90,13 +90,13 @@ It gives you an example how you can list all designs from a root folder of your 
 
 It explains how you can open a Design Editor using a classic IFrame API and download a result as an image. 
 
-You will find the information how to configure the editor and work with the IFrame API JS library at [classic Design Editor docs](https://customerscanvas.com/docs/cc/IframeApi-introduction.htm).
+You will find the information how to configure the editor and work with the IFrame API JS library at [classic Design Editor docs](https://customerscanvas.com/dev/editors/iframe-api/overview.html).
 
 #### EditWithUIF action
 
 It explains how you can open a Design Editor using a UI Framework JS library.  
 
-You will find the information how to create configs for UI Framework and how it works at [UI Framework guide](https://customerscanvas.com/support/ui-framework).
+You will find the information how to create configs for UI Framework and how it works at [UI Framework guide](https://customerscanvas.com/dev/editors/ui-framework/overview.html).
 
 > **NOTE:**
 > You may wonder what are the benefits of UI Framework vs IFrame API. Although IFrame API is easier to start with, UI Framework gives much more flexibility. It allows isolating all the editor specific code to separate JSON files called _configs_. This way you may store the editor settings separately from your code. 
@@ -117,21 +117,51 @@ As usually, you want to do it in the admin panel of your ecommerce, in the same 
 
 The **AdminController.cs** contains a very simplified version of such admin panel. It works with a simple database of the "ecommerce system product" (based on SQLite for brevity). There are pretty standard actions like list and edit, and a several of Customers' Canvas specific ones.
 
+##### Product specification
+
 Customer's Canvas stores the data you want to connect to the product in an entity called _Product Specification_. The product specifications store a link to the _editor_ (which is basically an UI Framework config) and the _attribute values_. Each editor may require different set of attributes. For example, a _Template-based Print Product_ requires you to provide a design while the _Blank Print Product_ requires a width and height. Go to your account, and create some product specifications.
 
 To create a connection between a product specification and your product, it is necessary to create another entity in Customer's Canvas - _Product Reference_. It binds three things together: the product in your system, the Customer's Canvas product specification, and the _storefront_. 
 
 The `ConnectProduct` action does this connection (and the `DisconnectProduct` removes it). We just show a list of a all product specification for each product and call the `ConnectProduct` for a specified product.
+
+##### Product information management (PIM)
+
+Product information management is another way to connect data in Customer's Canvas and product in ecommerce system. Product information management allows you to create product model in Customer’s Canvas and specific options for it. Based on combinations of these options you can generate product variants and connect them to designs. Each variant can be connected to it's own design. 
+
+To create a connection between a PIM product in Customer's Canvas and your product it is necessary to create another entity in Customer's Canvas - a _Product Link_. It can be done in _Links_ tab of Product information management page. 
+ 
+You can learn more about managing PIM in Customer's Canvas Help center: 
+
+https://customerscanvas.com/help/admin-guide/pim/intro.html
  
 #### Opening the editor
 
-Now let's take a look what happens on the storefront. Here, you want to list all your products and when a user opens a product, display an editor as per the Product Specification with the content as per the attributes the store employee have selected.
+Now let's take a look what happens on the storefront. Here, you want to list all your products and when a user opens a product, display an editor. 
 
-To simplify things, we show here only the products which are associated with a product specifications. The product page contains a Personalize button which leads to the **Personalize.cshtml** view. Here, we are using a special JS library called **storefront.main.js**. You may find it in **wwwroot/js** folder.
+Customer's Canvas support several types of editors (or _workflows_): UI Framework for Product specification and both UI Framework and Simple Editor for Product information management.
+
+##### UI Framework
+
+The product page contains a Personalize button which leads to the **Personalize.cshtml** view. 
+
+To show how "Populating Products with Predefined Data" feature works, the checkbox was added in product page. When it checked, the UI Framework loads with predefined user data, which is hardcoded in **Personalize.cshtml** for simplicity. It is supposed that you will add your own code which supplies such data from your backend application.
+
+In **Personalize.cshtml**, we are using a special JS library called **storefront.main.js**. You may find it in **wwwroot/js** folder.
 
 This script hides all the UI Framework complexities. All you need is to specify the product ID you want to load along with some init data. The script will do all the "heavy lifting".
 
 The only place where you need to add your custom logic is the code which executes when the user finishes editing and clicks "Add to cart" or "Finish" button. You can do it by adding the `onFinish` event handler. Here, you are receiving a JSON object representing a _Project_ which we will discuss in the next section.
+
+##### Simple editor
+
+Simple editor works in another way. When the product page is opened, Simple editor instantaneously replaces product page content with it`s interface. Simple editor script can be found in **SimpleEditor.cshtml**. 
+
+> NOTE: Simple Editor does not rely on storefrontjs library. However, it requires its own scripts. They are published on Aurigma's CDN (see the code) and maintained/updated by Aurigma on a regular basis.
+
+The only place where you need to add your custom logic is the code which executes when the user finishes editing and clicks “Add to cart” button. You can do it by adding the `addtocart` event handler. Here, you are receiving a JSON object representing a Project which we will discuss in the next section.
+
+> NOTE: At this moment, Simple Editor does not support populating a design with external data.
 
 #### Saving the project
 
@@ -145,8 +175,8 @@ To simplify things, we have omitted all the shopping cart functionality and subm
 
 For better understanding of what happens in this code, you may want to explore Customer's Canvas docs:
 
-  * [Official Customer's Canvas Developer Guide](https://customerscanvas.com/docfx/dev/intro.html) - storage services and Storefront API
-  * [Documentation of classic Customer's Canvas Design Editor](https://customerscanvas.com/docs/cc/) - main editor app used by the end users (both frontend IFrame API library and backend API)
-  * [IU Framework docs](https://customerscanvas.com/support/ui-framework) - a frontend technology which allows for extending the editor interface and making it better connected to your ecommerce platform.
+  * [Official Customer's Canvas Developer Center](https://customerscanvas.com/dev/)
+  * [Design Editor and UI Framework](https://customerscanvas.com/dev/editors/overview.html) - a documentation section which covers the editor SDKs.
+  * [BackOffice and other backend services API](https://customerscanvas.com/dev/backoffice/intro.html).
 
 If you run into any problems, feel free to [contact our support team](https://customerscanvas.com/account/cases). We will be happy to discuss your scenarios and help you to get started.

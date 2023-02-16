@@ -1,4 +1,5 @@
 ﻿using Aurigma.StorefrontApi;
+using CustomersCanvasSampleMVC.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace CustomersCanvasSample.Models
         public Product Product { get; set; }
         public ProductReferenceDto Reference { get; set; }
         public IEnumerable<ProductSpecificationDto> Specifications { get; set; }
+        public ProductIntegrationType ProductIntegrationType { get; set; }
     }
 }
