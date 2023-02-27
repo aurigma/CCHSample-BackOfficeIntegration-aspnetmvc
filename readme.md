@@ -30,14 +30,16 @@ In short, these are several methods how you deal with it:
 The sample app expects that the following app settings are available: 
 
 ```
-  "CustomersCanvas:TenantId": "<SEE BELOW>",
-  "CustomersCanvas:StorefrontId": "<SEE BELOW>",
-  "CustomersCanvas:IdentityProviderUrl": "https://customerscanvashub.com",
-  "CustomersCanvas:DesignEditorVersion": "<SEE BELOW>",
-  "CustomersCanvas:ClientSecret": "<SEE BELOW>",
-  "CustomersCanvas:ClientId": "<SEE BELOW>",
-  "CustomersCanvas:ApiUrl": "https://api.customerscanvashub.com"
+dotnet user-secrets set "CustomersCanvas:TenantId" "123"
+dotnet user-secrets set "CustomersCanvas:StorefrontId" "12345"
+dotnet user-secrets set "CustomersCanvas:IdentityProviderUrl" "https://customerscanvashub.com"
+dotnet user-secrets set "CustomersCanvas:DesignEditorVersion" "6.22.0"
+dotnet user-secrets set "CustomersCanvas:ClientSecret" "<YOUR CLIENT SECRET>"
+dotnet user-secrets set "CustomersCanvas:ClientId" "<YOUR CLIENT ID>"
+dotnet user-secrets set "CustomersCanvas:ApiUrl" "https://api.customerscanvashub.com"
 ```
+
+Below you will find how to determine these parameters.
 
 #### TenantId
 
