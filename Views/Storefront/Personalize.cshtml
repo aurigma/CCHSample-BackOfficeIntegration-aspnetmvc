@@ -5,7 +5,7 @@
 @{
 }
 @section Scripts {
-	<script src="~/js/storefront.main.js"></script>
+	<script src="https://staticjs-aurigma.azureedge.net/back-office/storefront/1.2.7/storefront.main.js"></script>
 
 	<script type="module">
 		document.addEventListener("DOMContentLoaded", async function (event) {
@@ -36,7 +36,7 @@
 				// (and complete the order). For this example, we will just hardcode it.
 				const orderId = "12345678";
 
-				await fetch("@Url.Action("Create", "Projects")", {
+				let projectRequest = await fetch("@Url.Action("Create", "Projects")", {
 					method: "post",
 					headers: {
 						"Content-Type": "application/json"
@@ -49,7 +49,8 @@
 						ownerId: userInfo.id
 					})
 				});
-				alert("Now the user's modifications are saved in your Customer's Canvas account.");
+				let savedProject = await projectRequest.json();
+				alert(`Project #${savedProject.id} was saved successfully. Go to Cusotmer\'s Canvas Hub and it navigate to Projects. Then you can go to Jobs to find the output file`);
 				window.location = "@Url.Action("Index", "Storefront")";
 			});
 		});

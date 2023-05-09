@@ -15,6 +15,9 @@
         @ViewData["Title"] <small class="text-muted"><a href="@Url.Action("Index", "Admin")">Back</a></small>
     </h1>
 
+    <p>This is your product page, a represantation of product data in your system. Grab the product ID from this page and enter it in Customer's Canvas Hub. 
+        After you click Add link and then Save the product within Customer's Canvas Hub, it will automatically appear in 
+        <a asp-area="" asp-controller="Storefront" asp-action="Index">Storefront</a>. It's not required to update the product here.</p> 
     <div class="accordion" id="product-management">
         <div class="card">
             <div class="card-header" id="heading-product-details">
@@ -30,9 +33,9 @@
                     <form method="post" action="@Url.Action("UpdateProductDetails", "Admin")">
                         <input type="hidden" value="@Model.Product.Id" name="id" />
                         <div class="form-group">
-                            <label for="idfield">ID</label>
+                            <label for="idfield">Storefront Product ID</label>
                             <input type="number" value="@Model.Product.Id" disabled="disabled" class="form-control" id="idfield" aria-describedby="idfieldhelp" placeholder="Enter SKU">
-                            <small id="idfieldhelp" class="form-text text-muted">Your product ID.</small>
+                            <small id="idfieldhelp" class="form-text text-muted">Go to <i>CC Hub → Products → Links → Add link</i> and put this ID there.</small>
                         </div>
 
                         <div class="form-group">
@@ -43,7 +46,7 @@
                         <div class="form-group">
                             <label for="pricefield">Price</label>
                             <input name="price" type="number" value="@Model.Product.Price" class="form-control" id="pricefield" aria-describedby="pricefieldhelp" placeholder="Enter price">
-                            <small id="namefieldhelp" class="form-text text-muted">A price.</small>
+                            <small id="namefieldhelp" class="form-text text-muted">Price.</small>
                         </div>
                         <button type="submit" class="btn btn-primary">Save</button>
                     </form>
@@ -90,13 +93,13 @@
             <div class="card">
                 <div class="card-header" id="heading-customerscanvas-connection">
                     <h5 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-customerscanvas-connection" aria-expanded="true" aria-controls="collapse-customerscanvas-connection">
-                            Connect to Customer's Canvas
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-customerscanvas-connection" aria-expanded="false" aria-controls="collapse-customerscanvas-connection">
+                            Connect to Product Specification (legacy)
                         </button>
                     </h5>
                 </div>
 
-                <div id="collapse-customerscanvas-connection" class="collapse show" aria-labelledby="heading-customerscanvas-connection" data-parent="#product-management">
+                <div id="collapse-customerscanvas-connection" class="collapse" aria-labelledby="heading-customerscanvas-connection" data-parent="#product-management">
                     <div class="card-body">
                         <form method="post" action="@Url.Action("ConnectProduct", "Admin")">
                             <input type="hidden" value="@Model.Product.Id" name="productId" />

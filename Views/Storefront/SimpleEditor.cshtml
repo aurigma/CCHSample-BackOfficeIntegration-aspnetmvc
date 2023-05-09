@@ -33,21 +33,21 @@
                     }
                 ];
 
-				await fetch("@Url.Action("Create", "Projects")", {
+				let projectRequest = await fetch("@Url.Action("Create", "Projects")", {
 					method: "post",
 					headers: {
 						"Content-Type": "application/json"
 					},
 					body: JSON.stringify({
-						items: lineItems,
+						items: project.line_items,
 						productId: "@Model.Id",
-						userId: "@ViewBag.UserId",
+						userId: userInfo.id,
 						orderId: orderId,
-						ownerId: "@ViewBag.UserId"
+						ownerId: userInfo.id
 					})
 				});
-
-				alert("Now the user's modifications are saved in your Customer's Canvas account.");
+				let savedProject = await projectRequest.json();
+				alert(`Project #${savedProject.id} was saved successfully. Go to Cusotmer\'s Canvas Hub and it navigate to Projects. Then you can go to Jobs to find the output file`);
 				window.location = "@Url.Action("Index", "Storefront")";
 			});
 
