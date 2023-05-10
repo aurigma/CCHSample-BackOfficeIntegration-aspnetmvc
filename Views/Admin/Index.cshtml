@@ -15,7 +15,7 @@
 		connect it to Customer's Canvas product.
 	</p>
 	@if (Model.ConnectedPimProducts.Count() == 0 && Model.ConnectedProducts.Count() == 0) {
-		<p class="alert alert-danger">You haven't connected any products. Go to Product → Link and create you firt Product Link</p>
+		<p class="alert alert-danger">You haven't connected any products. Go to Product → Link and create you first Product Link</p>
 	}
 	<div class="list-group">
 		@foreach (var product in Model.Products)
@@ -26,7 +26,7 @@
 					<div class="media-body">
 						<h5 class="mt-0">@product.Name</h5>
 						@product.Price
-                        @foreach (var connectedProduct in Model.ConnectedProducts) {
+						@foreach (var connectedProduct in Model.ConnectedProducts) {
 							@if (product.Id == connectedProduct.Id) {
 								<span><i class="fas fa-link text-success"></i>&nbsp;<span>Connected to Product Specification</span></span>
 							}

@@ -17,11 +17,11 @@
 
 			const userInfo = {id: "@ViewBag.UserId" };
 			
-            let loadDataToTemplate = @ViewBag.LoadDataToTemplate.ToString().ToLower();
-            if (loadDataToTemplate == true) {
+			let loadDataToTemplate = @ViewBag.LoadDataToTemplate.ToString().ToLower();
+			if (loadDataToTemplate == true) {
 				
 				// Here you can loaad predefined information in template
-                userInfo.data = @Json.Serialize(ViewBag.Data);
+				userInfo.data = @Json.Serialize(ViewBag.Data);
 			}
 
 			const container = document.getElementById('editor-container');
@@ -36,7 +36,8 @@
 				// (and complete the order). For this example, we will just hardcode it.
 				const orderId = "12345678";
 
-				let projectRequest = await fetch("@Url.Action("Create", "Projects")", {
+				debugger;
+				const projectRequest = await fetch("@Url.Action("Create", "Projects")", {
 					method: "post",
 					headers: {
 						"Content-Type": "application/json"
@@ -49,8 +50,8 @@
 						ownerId: userInfo.id
 					})
 				});
-				let savedProject = await projectRequest.json();
-				alert(`Project #${savedProject.id} was saved successfully. Go to Cusotmer\'s Canvas Hub and it navigate to Projects. Then you can go to Jobs to find the output file`);
+				const savedProject = await projectRequest.json();
+				alert(`Project #${savedProject.id} was saved successfully. Go to Customer\'s Canvas Hub and it navigate to Projects. Then you can go to Jobs to find the output file`);
 				window.location = "@Url.Action("Index", "Storefront")";
 			});
 		});
