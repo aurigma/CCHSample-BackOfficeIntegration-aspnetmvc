@@ -3,11 +3,11 @@
 @section Scripts {
 
 	<script type="module">
-		
+
 		document.addEventListener("DOMContentLoaded", async function (event) {
-			
+
 			const simpleEditor = document.getElementsByTagName("au-simple-editor").item(0);
-            
+
 			simpleEditor.setEditorConfig({
 				backOfficeUrl: "@ViewBag.BackOfficeUrl",
 				tenantId: @ViewBag.TenantId,
@@ -17,23 +17,22 @@
 			});
 
 			simpleEditor.addEventListener("addtocart", async (e) => {
-                // It is supposed that this code is called from a Shopping Cart, but for 
+				// It is supposed that this code is called from a Shopping Cart, but for
 				// simplicity, we do it immediately. As a part of the Project Data you need
 				// to send an Order ID which is normally known by the time when you checkout
 				// (and complete the order). For this example, we will just hardcode it.
 				const orderId = "12345678";
 
-                const lineItems = [
-                    {
-                        stateId: [
+				const lineItems = [
+					{
+						stateId: [
 							e.detail.key
 						],
 						fields: {},
 						hidden: {}
-                    }
-                ];
-
-				await fetch("@Url.Action("Create", "Projects")", {
+					}
+				];
+				const projectRequest = await fetch("@Url.Action("Create", "Projects")", {
 					method: "post",
 					headers: {
 						"Content-Type": "application/json"
@@ -46,8 +45,8 @@
 						ownerId: "@ViewBag.UserId"
 					})
 				});
-
-				alert("Now the user's modifications are saved in your Customer's Canvas account.");
+				const savedProject = await projectRequest.json();
+				alert(`Project #${savedProject.id} was saved successfully. Go to Customer\'s Canvas Hub and it navigate to Projects. Then you can go to Jobs to find the output file`);
 				window.location = "@Url.Action("Index", "Storefront")";
 			});
 

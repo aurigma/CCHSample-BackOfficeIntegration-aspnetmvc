@@ -10,6 +10,13 @@
 
 <div class="container">
 	<h1>@ViewData["Title"]</h1>
+	<p>This your system's product catalog. Some products can be connected to Customer's Canvas (and be personalizable),
+		others can be static (not connected to Customer's Canvas). Open a product, find a Product ID and use it to
+		connect it to Customer's Canvas product.
+	</p>
+	@if (Model.ConnectedPimProducts.Count() == 0 && Model.ConnectedProducts.Count() == 0) {
+		<p class="alert alert-danger">You haven't connected any products. Go to Product → Link and create you first Product Link</p>
+	}
 	<div class="list-group">
 		@foreach (var product in Model.Products)
 		{
@@ -19,14 +26,14 @@
 					<div class="media-body">
 						<h5 class="mt-0">@product.Name</h5>
 						@product.Price
-                        @foreach (var connectedProduct in Model.ConnectedProducts) {
+						@foreach (var connectedProduct in Model.ConnectedProducts) {
 							@if (product.Id == connectedProduct.Id) {
-								<i class="fas fa-plug"></i>
+								<span><i class="fas fa-link text-success"></i>&nbsp;<span>Connected to Product Specification</span></span>
 							}
 						}
 						@foreach (var connectedPimProduct in Model.ConnectedPimProducts) {
 							@if (product.Id == connectedPimProduct.Id) {
-								<b><i class="fas fa-plug"> </i> PIM </b>
+								<span><i class="fas fa-link text-success"></i>&nbsp;<span>Connected to Product (PIM)</span></span>
 							}
 						}
 					</div>

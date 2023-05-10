@@ -155,7 +155,7 @@ The product page contains a Personalize button which leads to the **Personalize.
 
 To show how "Populating Products with Predefined Data" feature works, the checkbox was added in product page. When it checked, the UI Framework loads with predefined user data, which is hardcoded in **Personalize.cshtml** for simplicity. It is supposed that you will add your own code which supplies such data from your backend application.
 
-In **Personalize.cshtml**, we are using a special JS library called **storefront.main.js**. You may find it in **wwwroot/js** folder.
+In **Personalize.cshtml**, we are using a special JS library called StorefrontJS. You may fetch from our CDN. Learn more [here](https://customerscanvas.com/dev/backoffice/storefront/storefrontjs/intro.html). 
 
 This script hides all the UI Framework complexities. All you need is to specify the product ID you want to load along with some init data. The script will do all the "heavy lifting".
 
