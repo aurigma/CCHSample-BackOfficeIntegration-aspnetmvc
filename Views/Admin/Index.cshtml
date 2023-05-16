@@ -15,7 +15,7 @@
 		connect it to Customer's Canvas product.
 	</p>
 	@if (Model.ConnectedPimProducts.Count() == 0 && Model.ConnectedProducts.Count() == 0) {
-		<p class="alert alert-danger">You haven't connected any products. Go to Product → Link and create you first Product Link</p>
+		<p class="alert alert-danger">You haven't connected any products. Go to Product → Link and create your first Product Link</p>
 	}
 	<div class="list-group">
 		@foreach (var product in Model.Products)
